@@ -2,6 +2,7 @@ import React, { Component, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 // import '../stylesheets/styles.css';
 import { Login } from './Login.jsx';
+import { Signup } from './Signup.jsx';
 
 function App() {
   const [token, setToken] = useState();
