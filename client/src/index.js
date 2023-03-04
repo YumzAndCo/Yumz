@@ -5,9 +5,8 @@ import App from './components/App.jsx';
 import './stylesheets/styles.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-ReactDOM.render(
+root.render(
   <BrowserRouter>
     <App />
-  </BrowserRouter>,
-  document.getElementById('root')
+  </BrowserRouter>
 );

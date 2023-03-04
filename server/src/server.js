@@ -6,6 +6,12 @@ const PORT = 3000;
 
 app.use(express.json());
 
+app.use('/login', (req, res) => {
+  res.send({
+    token: 'test123'
+  });
+});
+
 app.get('/', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../../client/src/index.html'));
 });
