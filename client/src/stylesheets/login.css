@@ -1,8 +1,0 @@
-.login {
-  position: absolute;
-  padding: 10px;
-  border: 5px solid black;
-  left: 50%;
-  top: 30%;
-  transform: translate(-50%, -50%);
-}
