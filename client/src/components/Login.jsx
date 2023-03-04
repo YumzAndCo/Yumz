@@ -1,5 +1,5 @@
-import React, { useState} from 'react';
-import styles from '../stylesheets/login.css'; 
+import React, { useState } from 'react';
+import styles from '../stylesheets/login.css';
 
 async function loginUser(credentials) {
   return fetch('/login', {
@@ -14,11 +14,11 @@ async function loginUser(credentials) {
 
 
 // This entire portion is used for react-router setup
-export const Login = ({setToken}) => {
+export const Login = ({ setToken }) => {
 
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
-  
+
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -29,13 +29,13 @@ export const Login = ({setToken}) => {
     setToken(token);
   };
 
-  return(
+  return (
     <div className="login">
       <h1>Please Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
           <p>Username</p>
-          <input type="text" onChange={e => setUserName(e.target.value)}/>
+          <input type="text" onChange={e => setUserName(e.target.value)} />
         </label>
         <label>
           <p>Password</p>
