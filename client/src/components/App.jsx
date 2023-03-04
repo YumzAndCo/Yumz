@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
-import { Routes, Route} from 'react-router';
-
+import { Routes, Route} from 'react-router-dom';
+import '../stylesheets/styles.css';
 import { Login } from './Login.jsx';
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <h1>Hello world!</h1>
-      </div>
-      /* This portion is used for react-router
-      <>
-        <Routes>
-          <Route path='/' element={ <Login /> }/>
-        </Routes>
-      </>
-      */
-    );
-  }
+function App() {
+  return (
+    <div className="router">
+      <h1>Hello world!</h1>
+      <Routes>
+        <Route path='/' element={<Login />}/>
+      </Routes>
+  
+    </div>
+    
+  );
 }
 
 export default App;
