@@ -2,12 +2,38 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
+const apiRouter = require('./routes/apiRouter');
 const PORT = 3000;
 
 app.use(express.json());
 
+app.use('/api', apiRouter);
+
+app.post('/signup', (req, res) => {
+  // TODO: Finish this route and it's middleware
+  console.log('Sign up Details: ', req.body);
+  res.status(400).json(req.body);
+});
+
+app.post('/login', (req, res) => {
+  // TODO: Finish this route and it's middleware
+  console.log('Login Deatils: ', req.body);
+  res.status(400).json(req.body);
+});
+
 app.get('/', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../../client/src/index.html'));
+});
+
+app.use((error, req, res, next) => {
+  const defaultErr = {
+    log: 'Express error handler caught unknown middleware error',
+    status: 500,
+    message: {err: 'An error occured'}
+  };
+  const errorObj = Object.assign({}, defaultErr, error);
+  console.log(errorObj.log);
+  return res.status(errorObj.status).json(errorObj.message);
 });
 
 app.listen(PORT, () => {
