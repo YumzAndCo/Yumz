@@ -23,27 +23,34 @@ userController.getUser = async (req, res, next) => {
     // POTENTIAL DEBUGGING: in above query, ensure database table contains (case-sensitive) username and password rows. (Delete this line after testing)
 
 
-    res.locals = queryResult.rows[0]
+    res.locals = queryResult.rows[0];
 
     // test: make sure res.locals has been saved with appropriate data
     // console.log('res.locals: ', res.locals)
+<<<<<<< HEAD
     return next()
+=======
+    return next();
+>>>>>>> 4a27d0704b7a6c54dc16c586f5b8418150dca6d2
   }
   catch (error){
     next({
       log: 'error running getUser middleware. ',
       message: 'an error occurred trying to find user'
-    })
+    });
   }
-}
+};
 
 userController.createUser = (req, res, next) => {
   try{
     const userName = req.body
-  } catch{
-
+  } catch(error){
+    return next({
+      log: 'userController.createUser()',
+      message: {err: error}
+    });
   }
-}
+};
 
 
-module.exports = userController
+module.exports = userController;
