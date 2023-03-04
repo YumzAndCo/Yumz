@@ -27,11 +27,7 @@ userController.getUser = async (req, res, next) => {
 
     // test: make sure res.locals has been saved with appropriate data
     // console.log('res.locals: ', res.locals)
-<<<<<<< HEAD
-    return next()
-=======
     return next();
->>>>>>> 4a27d0704b7a6c54dc16c586f5b8418150dca6d2
   }
   catch (error){
     next({
