@@ -1,8 +1,7 @@
 import React, { useState} from 'react';
-import styles from '../stylesheets/login.css'; 
 
-async function loginUser(credentials) {
-  return fetch('/login', {
+async function signupUser(credentials) {
+  return fetch('/signup', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -12,9 +11,7 @@ async function loginUser(credentials) {
     .then(data => data.json());
 }
 
-
-// This entire portion is used for react-router setup
-export const Login = ({setToken}) => {
+export const Signup = ({setToken}) => {
 
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
@@ -22,7 +19,7 @@ export const Login = ({setToken}) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const token = await loginUser({
+    const token = await signupUser({
       username,
       password
     });
@@ -30,11 +27,11 @@ export const Login = ({setToken}) => {
   };
 
   return(
-    <div className="login">
-      <h1>Please Log In</h1>
+    <div className="signup">
+      <h1>Sign up here</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          <p>Username</p>
+          <p>Email</p>
           <input type="text" onChange={e => setUserName(e.target.value)}/>
         </label>
         <label>
@@ -47,5 +44,4 @@ export const Login = ({setToken}) => {
       </form>
     </div>
   );
-};
-
+}
