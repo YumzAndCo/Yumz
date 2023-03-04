@@ -9,15 +9,15 @@ app.use(express.json());
 
 app.use('/api', apiRouter);
 
-app.post('/signup', (req, res) => {
+app.post('/signup', userController.createUser, (req, res) => {
   // TODO: Finish this route and it's middleware
   console.log('Sign up Details: ', req.body);
   res.status(400).json(req.body);
 });
 
-app.post('/login', (req, res) => {
+app.get('/login', userController.getUser, (req, res) => {
   // TODO: Finish this route and it's middleware
-  console.log('Login Deatils: ', req.body);
+  console.log('Login Deatils: ', req.params);
   res.status(400).json(req.body);
 });
 
