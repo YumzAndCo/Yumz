@@ -14,7 +14,10 @@ module.exports = {
       publicPath: '/'
     },
     proxy: {
-      '/**': 'http://localhost:3000'
+      '/**': {
+        target: 'http://localhost:3000/',
+        secure: false,
+      },
     },
     compress: true,
   },
