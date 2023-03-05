@@ -1,11 +1,12 @@
 import React, { Component, useState } from 'react';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-// import '../stylesheets/styles.css';
+import '../stylesheets/styles.css';
 import { Login } from './Login.jsx';
 import { Signup } from './Signup.jsx';
+import Landing from './Landing.jsx';
 
 function App() {
-  const [token, setToken] = useState();
+  // const [token, setToken] = useState();
   // function setToken(userToken) {
   //   sessionStorage.setItem('token', JSON.stringify(userToken));
   // }
@@ -18,9 +19,9 @@ function App() {
 
   // const token = getToken();
 
-  if (!token) {
-    return <Login setToken={setToken} />;
-  }
+  // if (!token) {
+  //   return <Login setToken={setToken} />;
+  // }
 
 
   return (
@@ -28,11 +29,8 @@ function App() {
 
       <Routes>
         <Route path='/' element={<Landing />} />
-
-        <Route path="*">
-          <h1>You have landed on a page that doesnt exist</h1>
-        </Route>
-
+        <Route path ='/signup' element={<Signup/>}/>
+        <Route path ='/login' element={<Login/>}/>
       </Routes>
     </div>
 
