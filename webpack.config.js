@@ -14,6 +14,10 @@ module.exports = {
       publicPath: '/'
     },
     proxy: {
+      '/**': {
+        target: 'http://localhost:3000/',
+        secure: false,
+      },
     },
     compress: true,
   },
@@ -42,6 +46,14 @@ module.exports = {
         test: /\.(css|scss)$/,
         exclude: /node_modules/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
       }
     ]
   }
