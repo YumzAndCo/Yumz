@@ -14,19 +14,19 @@ async function loginUser(credentials) {
 
 
 // This entire portion is used for react-router setup
-export const Login = ({ setToken }) => {
+export const Login = () => {
 
-  const [username, setUserName] = useState();
+  const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const token = await loginUser({
-      username,
+    await loginUser({
+      email,
       password
     });
-    setToken(token);
+    
   };
 
   return (
@@ -35,7 +35,7 @@ export const Login = ({ setToken }) => {
       <form onSubmit={handleSubmit}>
         <label>
           <p>Username</p>
-          <input type="text" onChange={e => setUserName(e.target.value)} />
+          <input type="text" onChange={e => setEmail(e.target.value)} />
         </label>
         <label>
           <p>Password</p>

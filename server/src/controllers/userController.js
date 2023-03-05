@@ -19,7 +19,7 @@ userController.getUser = async (req, res, next) => {
     //next: Getting a specific user via username and password
     //  be sure to update username and password strings to reflect input 
     
-    const queryResult = await db.query(`SELECT TOP 1 FROM Users WHERE username = ${username} AND password = ${password}`)
+    const queryResult = await db.query(`SELECT TOP 1 FROM Users WHERE username = ${username} AND password = ${password}`);
     // POTENTIAL DEBUGGING: in above query, ensure database table contains (case-sensitive) username and password rows. (Delete this line after testing)
 
 
@@ -39,7 +39,7 @@ userController.getUser = async (req, res, next) => {
 
 userController.createUser = (req, res, next) => {
   try{
-    const userName = req.body
+    const userName = req.body;
   } catch(error){
     return next({
       log: 'userController.createUser()',

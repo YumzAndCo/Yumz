@@ -36,13 +36,9 @@
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-<<<<<<< HEAD
+    "file-loader": "^6.2.0",
     "node-fetch": "^2.6.9",
     "pg": "^8.9.0",
-=======
-    "file-loader": "^6.2.0",
-    "node-fetch": "^3.3.0",
->>>>>>> dev
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.8.2",
