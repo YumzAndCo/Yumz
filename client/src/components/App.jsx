@@ -24,7 +24,7 @@ function App() {
         <Route path='/reviews' element={<Reviews />} />
         <Route path='/favorites' element={<Favorites />} />
         <Route path='/wishlist' element={<Wishlist />} />
-        <Route path='/details-modal' element={<DetailsModal />} />
+        <Route path='/details-modal' element={<DetailsModal show={true} />} />
         <Route path='/new-restaurant' element={<NewRestaurant />} />
       </Routes>
     </div>
