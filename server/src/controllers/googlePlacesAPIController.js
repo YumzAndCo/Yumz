@@ -20,28 +20,13 @@ const filterSearchResults = (searchResults) => {
 
   // Filter and return results in the format of an object, where it's keys are the restaurant id #s
   filteredReturnResults.results = {};
+  const undefinedValue = 'N/A';
   for (const restaurant of results) {
-    filteredReturnResults.results[restaurant.place_id] = {
-      name: restaurant.name,
-      address: restaurant.formatted_address,
-      priceLevel: restaurant.price_level,
-      ratings: restaurant.rating,
-      totalUserRatings: restaurant.user_ratings_total
-    };
+    filteredReturnResults.results[restaurant.place_id] = {};
+    filteredReturnResults.results[restaurant.place_id].name = restaurant.name || undefinedValue;
+    filteredReturnResults.results[restaurant.place_id].address = restaurant.formatted_address || undefinedValue;
+    filteredReturnResults.results[restaurant.place_id].priceLevel = restaurant.price_level || undefinedValue;
   }
-
-  // // Filter and return results in the format of an array
-  // filteredReturnResults.results = [];
-  // for (const restaurant of results) {
-  //   filteredReturnResults.results.push({
-  //     id: restaurant.place_id,
-  //     name: restaurant.name,
-  //     address: restaurant.formatted_address,
-  //     priceLevel: restaurant.price_level,
-  //     rating: restaurant.rating,
-  //     totalUserRatings: restaurant.user_ratings_total
-  //   });
-  // }
 
   return filteredReturnResults;
 };
@@ -116,7 +101,15 @@ googlePlacesAPIController.getPlaceDetails = async (req, res, next) => {
     }));
     let placeDetailsResults = await placeDetailsResponse.json();
     placeDetailsResults = placeDetailsResults.result;
-    // TODO: Parse the place details to just include what data that we need
+
+    /**
+     * Bug: If placeDetails.Results.current_opening_hours is undefined then line 134 will throw an error
+     * Fix: Ensure placeDetailsResults.current_opening_hours is not undefined
+     */
+    if (placeDetailsResults.current_opening_hours === undefined) {
+      placeDetailsResults.current_opening_hours = {};
+    }
+
     const sortedPlaceDetails = {
       id: placeDetailsResults.place_id,
       name: placeDetailsResults.name,
@@ -137,6 +130,10 @@ googlePlacesAPIController.getPlaceDetails = async (req, res, next) => {
       servesDinner: placeDetailsResults.serves_dinner,
       servesLunch: placeDetailsResults.serves_wine,
     };
+
+    for (const [key, details] of Object.entries(sortedPlaceDetails)) {
+      if (details === undefined) sortedPlaceDetails[key] = 'N/A';
+    }
 
     res.locals.placeDetailsResults = sortedPlaceDetails;
     return next();
