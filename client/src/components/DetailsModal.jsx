@@ -118,7 +118,7 @@ const DetailsModal = props => {
           <span>Notes</span>
         </div>
         <textarea id="rating-notes" type="text" />
-        <button onClick={onSaveChangesBtnClick}>Save Changes</button>
+        <button className="details-modal-button" onClick={onSaveChangesBtnClick}>Save Changes</button>
       </div>
     )};
 };

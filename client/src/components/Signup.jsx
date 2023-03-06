@@ -46,7 +46,7 @@ export const Signup = ({setToken}) => {
           <input type="number" onChange={e => setZip(e.target.value)}/>
         </label>
         <div>
-          <button type="submit">Submit</button>
+          <button className="submit" type="submit">Submit</button>
         </div>
       </form>
     </div>
