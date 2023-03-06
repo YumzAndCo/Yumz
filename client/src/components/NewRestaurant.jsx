@@ -5,6 +5,7 @@ import RatingsTable from './RatingsTable.jsx';
 import styles from '../stylesheets/new-restaurant.css';
 import detailStyles from '../stylesheets/details-modal.css';
 import RatingNotes from './RatingNotes.jsx';
+import helperFns from '../helperFns.js';
 
 const NewRestaurant = props => {
   const [restaurantInfo, setRestaurantInfo] = useState(null);
@@ -23,7 +24,15 @@ const NewRestaurant = props => {
 
       // TODO - not handling scenario where no search results come back..
       console.log('submitRestaurantName, searching for restaurant name:', restaurantName);
-      const response = await fetch(`/api/search?query=${restaurantName}`);
+      const userCoords = helperFns.retrieveUserCoords();
+      const latitude = Object.hasOwn(userCoords, 'latitude') ? userCoords.latitude : null;
+      const longitude = Object.hasOwn(userCoords, 'longitude') ? userCoords.longitude : null;
+      let requestUrl = `/api/search?query=${restaurantName}`;
+      if (latitude && longitude) {
+        requestUrl += `&latitude=${latitude}&longitude=${longitude}`;
+      }
+      console.log('NewRestaurant sending request to ', requestUrl);
+      const response = await fetch(requestUrl);
       const jsonSearchResults = await response.json();
 
       const newSearchResults = {};
@@ -45,7 +54,9 @@ const NewRestaurant = props => {
     console.log(selectedRestaurant);
     try {
       const googlePlaceId = selectedRestaurant.googlePlaceId;
-      const response = await fetch(`/api/place-details?placeID=${googlePlaceId}`);
+      const requestUrl = `/api/place-details?placeID=${googlePlaceId}`;
+
+      const response = await fetch(requestUrl);
       const restaurantDetails = await response.json();
 
       // Note: Google Places API doesn't provide all of the details, so hardcoding for now

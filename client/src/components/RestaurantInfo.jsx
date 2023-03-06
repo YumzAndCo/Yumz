@@ -25,13 +25,17 @@ const RestaurantInfo = props => {
     />
   );
   let hoursStr = '';
-  props.info.hours.forEach((dayStr, index) => {
-    if (index === props.info.hours.length - 1) {
-      hoursStr += dayStr;
-    } else {
-      hoursStr += dayStr + ', ';
-    }
-  });
+  if (Array.isArray(props.info.hours)) {
+    props.info.hours.forEach((dayStr, index) => {
+      if (index === props.info.hours.length - 1) {
+        hoursStr += dayStr;
+      } else {
+        hoursStr += dayStr + ', ';
+      }
+    });
+  } else {
+    hoursStr = 'N/A';
+  }
   mainDetails.push(
     <Detail
       iconName={faClock}
