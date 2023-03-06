@@ -18,7 +18,7 @@ app.post('/signup', userController.createUser, (req, res) => {
 
 app.get('/login', userController.getUser, (req, res) => {
   // TODO: Finish this route and it's middleware
-  console.log('Login Deatils: ', req.params);
+  console.log('Login Details: ', req.params);
   res.status(400).json(req.body);
 });
 

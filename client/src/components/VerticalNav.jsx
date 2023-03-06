@@ -1,11 +1,14 @@
 import React from 'react';
 import VerticalNavItem from './VerticalNavItem.jsx';
 import { faPlus, faFaceSmile, faBook } from '@fortawesome/free-solid-svg-icons';
+import styles from '../stylesheets/vertical-nav.css';
+import { useNavigate } from 'react-router-dom';
 
 const VerticalNav = props => {
 
+  const navigate = useNavigate();
   const onNavItemClick = (event, btnName) => {
-    console.log(btnName, 'button has been clicked');
+    navigate('/login');
   };
 
   return (
@@ -13,7 +16,7 @@ const VerticalNav = props => {
       <VerticalNavItem
         iconName={faFaceSmile}
         btnName="user"
-        onClickHandler={onNavItemClick} />
+        onClickHandler={(e) => navigate('/signup')} />
       <VerticalNavItem
         iconName={faPlus}
         btnName="add-restaurant"
