@@ -12,11 +12,11 @@ router.get('/search', googlePlacesAPIController.search, (req, res) => {
   return res.status(200).json(res.locals.restaurantSearchResults);
 });
 
-router.get('/next-page', googlePlacesAPIController.getNextPage, (req, res) => {
+router.get('/results-next-page', googlePlacesAPIController.getNextPage, (req, res) => {
   return res.status(200).json(res.locals.nextPageResults);
 });
 
-router.get('/place-details-test', googlePlacesAPIController.getPlaceDetails, (req, res) => {
+router.get('/place-details', googlePlacesAPIController.getPlaceDetails, (req, res) => {
   return res.status(200).json(res.locals.placeDetailsResults);
 });
 module.exports = router;

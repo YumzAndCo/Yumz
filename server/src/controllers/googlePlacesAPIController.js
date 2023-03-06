@@ -8,7 +8,7 @@ const createError = (errorInfo) => {
   const { method, type, error } = errorInfo;
   return {
     log: `googlePlacesAPIController.${method} ${type}: ERROR: ${typeof err === 'object' ? JSON.stringify(error) : error}`,
-    message: { err: `Error occured in googlePlacesAPIController.${method}. Checjk server logs for more details.`}
+    message: { err: `Error occured in googlePlacesAPIController.${method}. Check server logs for more details.`}
   };
 };
 
