@@ -9,7 +9,10 @@ const ListItem = (restaurants, listName) => {
       <div className = "collectionTitle">{listName}</div>
       {restaurants.map((place) => 
         (<div className="preview" key={place.id}>
-          <span>{place.name}</span> <span>{place.rating} ☆</span><span>{place.cuisine}</span><span>{place.hours}</span>
+          <span>{place.name}</span> 
+          <span>{place.rating} ☆</span>
+          <span>{place.cuisine}</span>
+          <span>{place.hours}</span>
         </div>)
       )}
     </div>

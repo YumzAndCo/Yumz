@@ -9,6 +9,6 @@ export const CollectionList = (props) => {
   }]);
 
   return (
-    <ListItem restaurants={restaurants}/>
+    <ListItem restaurants={props.restaurants}/>
   );
 };

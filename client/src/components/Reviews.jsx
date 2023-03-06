@@ -13,16 +13,16 @@ export const Reviews = () => {
       id: 1
     });
 
-  useEffect(() => {
-    async function fetchReviews() {
-      return fetch('/reviews')
-        .then(data => data.json())
-        .then(data => setListItems(data));
-    }
-    fetchReviews();
-  });
+  // useEffect(() => {
+  //   async function fetchReviews() {
+  //     return fetch('/reviews')
+  //       .then(data => data.json())
+  //       .then(data => setListItems(data));
+  //   }
+  //   fetchReviews();
+  // });
   return (
-    <CollectionList listName="Reviews"/>
+    <CollectionList restaurants={listItems} listName="Reviews"/>
   );
 };
 
