@@ -1,31 +1,29 @@
+const { query } = require('express');
 const db = require('../models/userModels.js');
+
+const createError = (errorInfo) => {
+  const {method, type, error} = errorInfo;
+  return {
+    log: `userController.${method} ${type}: ERROR: ${typeof error === 'object' ? JSON.stringify(error):error}`,
+    message: {err: `error occurreed in userController.${method}. Check server logs for more details.`}
+  };
+};
 
 const userController = {};
 
 userController.getUser = async (req, res, next) => {
   try {
     //test: console-log params to make sure params are being sent over
-    // console.log(req.params)
-
-    const username = req.params.username;
-    const password = req.params.password;
+    const {email, password} = req.body
 
     //test: ensure req.params are appropriately saved as consts
-    // console.log('username: ', username,  'password : ', password)
+    // console.log('email: ', email,  'password : ', password)
 
-    //test: Try getting all users to make sure we're accessing the database
-    // const queryResult = await db.query('SELECT * FROM Users')
-
-    //next: Getting a specific user via username and password
-    //  be sure to update username and password strings to reflect input 
-    
-    const queryResult = await db.query(`SELECT TOP 1 FROM Users WHERE username = ${username} AND password = ${password}`);
-    // POTENTIAL DEBUGGING: in above query, ensure database table contains (case-sensitive) username and password rows. (Delete this line after testing)
-
+    const queryResult = await db.query(`SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`);
 
     res.locals = queryResult.rows[0];
+    
 
-    // test: make sure res.locals has been saved with appropriate data
     // console.log('res.locals: ', res.locals)
     return next();
   }
@@ -37,9 +35,80 @@ userController.getUser = async (req, res, next) => {
   }
 };
 
-userController.createUser = (req, res, next) => {
+userController.createUser = async (req, res, next) => {
   try{
-    const userName = req.body;
+    const {name, email, password} = req.body;
+    console.log(req.body);
+    // TODO: change from truthy to different logic later
+    if(!name || !password || !email){
+      return next(createError({
+        method: 'createUser',
+        type: 'all fields must be filled',
+        error: 'all fields must be filled'
+      }));
+    }
+
+    const checkEmail = await db.query(`SELECT * FROM users WHERE email = '${email}'`);
+    if (checkEmail.rowCount !== 0){
+      return next({
+        log: 'email already exists',
+        message: {err: 'email already exists'}
+      });
+    }
+
+    // CHECKS TO SEE IF NAME IS UNIQUE
+    // const checkName = await db.query(`SELECT * FROM users WHERE name = '${name}'`);
+    // if (checkName.rowCount !== 0){
+    //   return next({
+    //     log: 'name already exists',
+    //     message: {err: 'email already exists'}
+    //   });
+    // }
+    
+    //creating the user instance in the database
+    const created = await db.query(
+      `INSERT INTO users (email, name, password) 
+      VALUES ('${email}', '${name}', '${password}')`
+    )
+    
+    //getting that instance from the database and saving it to res.locals
+    const queryResult = await db.query(`SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`);
+    res.locals.user = queryResult.rows[0]
+    
+    
+    const userID = res.locals.user.user_id;
+    
+
+    //creating three new instances of Collections based on that user's userID
+    await db.query(
+      `INSERT INTO collection (user_id, name)
+      VALUES ('${userID}', 'favorites')`
+    )
+
+    await db.query(
+      `INSERT INTO collection (user_id, name)
+      VALUES ('${userID}', 'wishlist')`
+    )
+
+    await db.query(
+      `INSERT INTO collection (user_id, name)
+      VALUES ('${userID}', 'reviews')`
+    )
+
+    const userFavorites = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'favorites'`);
+    const userWishlist = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'wishlist'`);
+    const userReviews = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'reviews'`);
+
+    const collections = {
+      userFavorites: userFavorites,
+      userWishList: userWishlist,
+      userReviews: userReviews
+    }
+
+    res.locals.collections = collections;
+    
+    return next();
+
   } catch(error){
     return next({
       log: 'userController.createUser()',
