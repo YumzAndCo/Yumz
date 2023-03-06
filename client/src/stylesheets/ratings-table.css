@@ -3,6 +3,11 @@
   text-align: right;
 }
 
+#ratings-table span {
+  border-right: none;
+  padding: 0;
+}
+
 #ratings-table td {
   padding-top: 1rem;
 }

@@ -16,6 +16,10 @@
   background-color: #ff7621;
 }
 
+.details-modal-btn {
+  width: 10rem;
+}
+
 #next-button {
   float: right;
 }
@@ -26,11 +30,10 @@
   font-family: 'League Spartan', sans-serif;
   padding: 2rem;
   height: 100vh;
+  font-size: 1.3rem;
 }
 
 #new-restaurant-header {
-  /* font-family: 'Fredoka One', cursive;
-  letter-spacing: .2rem; */
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;

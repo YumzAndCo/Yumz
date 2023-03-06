@@ -6,31 +6,36 @@ import { faLocationDot, faCircleInfo, faPhone, faTruckFast, faShirt, faCar } fro
 import { faClock, faCreditCard, faFileLines } from '@fortawesome/free-regular-svg-icons';
 
 const RestaurantInfo = props => {
-  /* TO DO:
-    - Iterate through props and create Detail components
-    - Can use the database ID as the key
-  */
+  // console.log('RESTAURANT INFO:', props);
   const mainDetails = [];
   const details = {};
   mainDetails.push(
     <Detail
       iconName={faLocationDot}
-      text="3041 Stevens Creek Blvd, Santa Clara, CA 95050"
-      url="https://maps.google.com/?q=3041 Stevens Creek Blvd, Santa Clara, CA 95050"
+      text={props.info.address}
+      url={`https://maps.google.com/?q=${props.info.address}`}
       key={1}
     />
   );
   mainDetails.push(
     <Detail
       iconName={faCircleInfo}
-      text="American (Traditional), Pizza, Pasta Shops"
+      text={props.info.category}
       key={2}
     />
   );
+  let hoursStr = '';
+  props.info.hours.forEach((dayStr, index) => {
+    if (index === props.info.hours.length - 1) {
+      hoursStr += dayStr;
+    } else {
+      hoursStr += dayStr + ', ';
+    }
+  });
   mainDetails.push(
     <Detail
       iconName={faClock}
-      text="Sunday - Saturday 11:00 AM - 10:00 PM"
+      text={hoursStr}
       key={3}
     />
   );
@@ -38,28 +43,30 @@ const RestaurantInfo = props => {
   details['parking'] =
     <Detail
       iconName={faCar}
-      text="Private lot parking"
+      text={props.info.parking}
       key={4}
     />;
 
+  const deliveryTxt = props.info.delivery ? 'Offers delivery' : 'No delivery'
   details['delivery'] =
     <Detail
       iconName={faTruckFast}
-      text="Offers delivery"
+      text={deliveryTxt}
       key={5}
     />;
 
   details['dress-code'] =
     <Detail
       iconName={faShirt}
-      text="Casual"
+      text={props.info['dress-code']}
       key={6}
     />;
 
+  const creditCardTxt = props.info['credit-cards'] ? 'Accepts credit cards' : 'Does not accept credit cards';
   details['credit-cards'] =
     <Detail
       iconName={faCreditCard}
-      text="Accepts credit cards"
+      text={creditCardTxt}
       key={7}
     />;
 
@@ -67,14 +74,15 @@ const RestaurantInfo = props => {
     <Detail
       iconName={faFileLines}
       text="View menu"
-      url="https://www.google.com"
+      url={props.info.menu}
       key={8}
     />;
 
+  const reservationsTxt = props.info.reservations ? 'Takes reservations' : 'No reservations';
   details['reservations'] =
     <Detail
       iconName={faPhone}
-      text="Takes reservations"
+      text={reservationsTxt}
       key={9}
     />;
   return (
