@@ -4,11 +4,17 @@ import ListItem from './ListItem.jsx';
 
 export const CollectionList = (props) => {
   
-  const [restaurants, setRestaurants] = useState([{
-    props
-  }]);
+  const [restaurants, setRestaurants] = useState(props.restaurants); //array
+  const [listName, setListName] = useState(props.listName);
 
   return (
-    <ListItem restaurants={props.restaurants}/>
+    <div className = "listview" >
+      <div className = "collectionTitle">{listName}</div>
+      {restaurants.map((listing) => ( //each restautant in array, return a listitem
+        <ListItem listing={listing} key={listing.id}/>
+      ))}
+      
+    </div>
+    
   );
 };

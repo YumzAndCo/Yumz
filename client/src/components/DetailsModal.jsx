@@ -7,10 +7,11 @@ import { faLocationDot, faCircleInfo, faPhone, faTruckFast, faShirt, faCar } fro
 import { faClock, faCreditCard, faFileLines } from '@fortawesome/free-regular-svg-icons';
 
 const DetailsModal = props => {
-  const closeModal = () => {
-    // TO DO - this function should probably be passed in through props??
-    console.log('close modal button clicked');
-  };
+  // const closeModal = () => {
+  //   // TO DO - this function should probably be passed in through props??
+  //   console.log('close modal button clicked');
+    
+  // };
 
   const onSaveChangesBtnClick = () => {
     // TO DO
@@ -92,35 +93,34 @@ const DetailsModal = props => {
 
   // TO DO - set last edited date text
   const lastEdited = 'last edited March 6, 2023';
-
-  return (
-    <div id="details-modal">
-      <div id="restaurant-name">
-        The Cheesecake Factory
-        <span
-          id="closeBtn"
-          onClick={closeModal}>x</span>
+  if (props.show === true) {
+    return (
+      <div id="details-modal">
+        <div id="restaurant-name">
+          The Cheesecake Factory
+          <span
+            id="closeBtn"
+            onClick={props.close}>x</span>
+        </div>
+        <div className="section-header">
+          <span>Info</span>
+        </div>
+        {mainDetails}
+        <DetailsTable details={details} />
+        <div className="section-header">
+          <span>Ratings
+            <span id="last-edited-date">({lastEdited})</span>
+          </span>
+        </div>
+        {/* TO DO - set numStarsFilled from props */}
+        <RatingsTable />
+        <div className="section-header">
+          <span>Notes</span>
+        </div>
+        <textarea id="rating-notes" type="text" />
+        <button className="details-modal-button" onClick={onSaveChangesBtnClick}>Save Changes</button>
       </div>
-      <div className="section-header">
-        <span>Info</span>
-      </div>
-      {mainDetails}
-      <DetailsTable details={details} />
-      <div className="section-header">
-        <span>Ratings
-          <span id="last-edited-date">({lastEdited})</span>
-        </span>
-      </div>
-      {/* TO DO - set numStarsFilled from props */}
-      <RatingsTable />
-      <div className="section-header">
-        <span>Notes</span>
-      </div>
-      <textarea id="rating-notes" type="text" />
-      <button className="details-modal-btn"
-        onClick={onSaveChangesBtnClick}>Save Changes</button>
-    </div>
-  );
+    )};
 };
 
 export default DetailsModal;

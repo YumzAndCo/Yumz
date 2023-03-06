@@ -12,7 +12,7 @@
   transform: translate(-50%, -50%);
 }
 
-button {
+.submit {
   border-radius: 10px;
   margin-top: 15px;
   padding: 10px;
@@ -22,7 +22,7 @@ button {
   border: 3px solid #aa8cd7;
 }
 
-button:hover {
+.submit:hover {
   transform: scale(1.01);
   filter: brightness(97%);
 }

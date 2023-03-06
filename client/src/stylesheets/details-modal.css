@@ -22,7 +22,7 @@ td {
   color: #522952;
 }
 
-button:hover {
+.details-modal-button:hover {
   background-color: #ff7621;
 }
 
