@@ -1,0 +1,17 @@
+#ratings-table {
+  margin-left: 2rem;
+  text-align: right;
+}
+
+#ratings-table td {
+  padding-top: 1rem;
+}
+
+td.rating-label {
+  width: 5rem;
+}
+
+td.stars {
+  text-align: left;
+  padding-left: 1rem;
+}
