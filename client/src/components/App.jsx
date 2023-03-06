@@ -9,6 +9,7 @@ import { Wishlist } from './Wishlist.jsx';
 import Landing from './Landing.jsx';
 import { CollectionList } from './CollectionList.jsx';
 import DetailsModal from './DetailsModal.jsx';
+import NewRestaurant from './NewRestaurant.jsx';
 
 function App() {
 
@@ -19,11 +20,12 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/collection' element={<CollectionList />} />
-        <Route path='/' element={<Landing />} />
+        <Route path='/landing' element={<Landing />} />
         <Route path='/reviews' element={<Reviews />} />
         <Route path='/favorites' element={<Favorites />} />
         <Route path='/wishlist' element={<Wishlist />} />
         <Route path='/details-modal' element={<DetailsModal />} />
+        <Route path='/' element={<NewRestaurant />} />
       </Routes>
     </div>
 

@@ -42,6 +42,7 @@ button:hover {
   font-weight: 500;
   font-size: 1.5rem;
   color: #884488;
+  border-right: none;
 }
 
 #closeBtn {
