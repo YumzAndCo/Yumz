@@ -8,8 +8,15 @@ const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 
 const router = express.Router();
 
-router.get('/test', googlePlacesAPIController.findPlace, (req, res) => {
-  return res.status(200).json(res.locals.textResponse);
+router.get('/search', googlePlacesAPIController.search, (req, res) => {
+  return res.status(200).json(res.locals.restaurantSearchResults);
 });
 
+router.get('/next-page', googlePlacesAPIController.getNextPage, (req, res) => {
+  return res.status(200).json(res.locals.nextPageResults);
+});
+
+router.get('/place-details-test', googlePlacesAPIController.getPlaceDetails, (req, res) => {
+  return res.status(200).json(res.locals.placeDetailsResults);
+});
 module.exports = router;
