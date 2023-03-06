@@ -1,17 +1,10 @@
 import React from 'react';
-import Detail from './Detail.jsx';
-import DetailsTable from './DetailsTable.jsx';
 import RatingsTable from './RatingsTable.jsx';
+import RestaurantInfo from './RestaurantInfo.jsx';
+import RatingNotes from './RatingNotes.jsx';
 import styles from '../stylesheets/details-modal.css';
-import { faLocationDot, faCircleInfo, faPhone, faTruckFast, faShirt, faCar } from '@fortawesome/free-solid-svg-icons';
-import { faClock, faCreditCard, faFileLines } from '@fortawesome/free-regular-svg-icons';
 
 const DetailsModal = props => {
-  // const closeModal = () => {
-  //   // TO DO - this function should probably be passed in through props??
-  //   console.log('close modal button clicked');
-    
-  // };
 
   const onSaveChangesBtnClick = () => {
     // TO DO
@@ -19,80 +12,22 @@ const DetailsModal = props => {
     console.log('save changes button clicked');
   };
 
-  /* TO DO:
-    - Iterate through props and create Detail components
-    - Can use the database ID as the key
-  */
-  const mainDetails = [];
-  const details = {};
-  mainDetails.push(
-    <Detail
-      iconName={faLocationDot}
-      text="3041 Stevens Creek Blvd, Santa Clara, CA 95050"
-      url="https://maps.google.com/?q=3041 Stevens Creek Blvd, Santa Clara, CA 95050"
-      key={1}
-    />
-  );
-  mainDetails.push(
-    <Detail
-      iconName={faCircleInfo}
-      text="American (Traditional), Pizza, Pasta Shops"
-      key={2}
-    />
-  );
-  mainDetails.push(
-    <Detail
-      iconName={faClock}
-      text="Sunday - Saturday 11:00 AM - 10:00 PM"
-      key={3}
-    />
-  );
-
-  details['parking'] =
-    <Detail
-      iconName={faCar}
-      text="Private lot parking"
-      key={4}
-    />;
-
-  details['delivery'] =
-    <Detail
-      iconName={faTruckFast}
-      text="Offers delivery"
-      key={5}
-    />;
-
-  details['dress-code'] =
-    <Detail
-      iconName={faShirt}
-      text="Casual"
-      key={6}
-    />;
-
-  details['credit-cards'] =
-    <Detail
-      iconName={faCreditCard}
-      text="Accepts credit cards"
-      key={7}
-    />;
-
-  details['menu'] =
-    <Detail
-      iconName={faFileLines}
-      text="View menu"
-      url="https://www.google.com"
-      key={8}
-    />;
-
-  details['reservations'] =
-    <Detail
-      iconName={faPhone}
-      text="Takes reservations"
-      key={9}
-    />;
+  const newRestaurantInfo = {};
+  newRestaurantInfo['googlePlaceId'] = '1234';
+  newRestaurantInfo['name'] = 'The Cheesecake Factory';
+  newRestaurantInfo['address'] = '3041 Stevens Creek Blvd, Santa Clara, CA 95050';
+  newRestaurantInfo['category'] = 'American (Traditional), Pizza, Pasta Shops';
+  newRestaurantInfo['parking'] = 'Private lot parking';
+  newRestaurantInfo['hours'] = ['Sunday 10:00 AM - 5:00 PM', 'Monday 11:00 AM - 10:00 PM', 'Tuesday 11:00 AM - 10:00 PM'];
+  newRestaurantInfo['menu'] = 'https://www.google.com';
+  newRestaurantInfo['dress-code'] = 'Casual';
+  newRestaurantInfo['reservations'] = true;
+  newRestaurantInfo['delivery'] = true;
+  newRestaurantInfo['credit-cards'] = true;
 
   // TO DO - set last edited date text
   const lastEdited = 'last edited March 6, 2023';
+
   if (props.show === true) {
     return (
       <div id="details-modal">
@@ -102,11 +37,7 @@ const DetailsModal = props => {
             id="closeBtn"
             onClick={props.close}>x</span>
         </div>
-        <div className="section-header">
-          <span>Info</span>
-        </div>
-        {mainDetails}
-        <DetailsTable details={details} />
+        <RestaurantInfo info={newRestaurantInfo} />
         <div className="section-header">
           <span>Ratings
             <span id="last-edited-date">({lastEdited})</span>
@@ -117,10 +48,12 @@ const DetailsModal = props => {
         <div className="section-header">
           <span>Notes</span>
         </div>
-        <textarea id="rating-notes" type="text" />
-        <button className="details-modal-button" onClick={onSaveChangesBtnClick}>Save Changes</button>
+        <RatingNotes
+          clickHandler={onSaveChangesBtnClick}
+          buttonText='Save Changes' />
       </div>
-    )};
+    );
+  }
 };
 
 export default DetailsModal;
