@@ -1,6 +1,7 @@
 const { Pool } = require('pg');
+require('dotenv').config();
 
-const PG_URI = 'http://www.gofuckyourself@ElephantSQL.gov/Create_something_and_replace_this_url';
+const PG_URI = process.env.DATABASEAPIKEY;
 
 // create a new pool here using the connection string above
 const pool = new Pool({

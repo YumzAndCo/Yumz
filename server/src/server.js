@@ -12,15 +12,21 @@ app.use('/api', apiRouter);
 
 app.post('/signup', userController.createUser, (req, res) => {
   // TODO: Finish this route and it's middleware
-  console.log('Sign up Details: ', req.body);
-  res.status(400).json(req.body);
+  res.status(200);
+  res.send(res.locals);
 });
 
-app.get('/login', userController.getUser, (req, res) => {
+app.post('/login', userController.getUser, (req, res) => {
   // TODO: Finish this route and it's middleware
-  console.log('Login Details: ', req.params);
-  res.status(400).json(req.body);
+  
+  res.status(200);
+  res.send(res.locals);
+
 });
+
+// app.get('/reviews', collectionsController.getReviews, (req, res) => {
+//   res.status(200).send(res.locals.reviews)
+// })
 
 app.get('/', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../../client/src/index.html'));
