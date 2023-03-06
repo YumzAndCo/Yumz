@@ -1,4 +1,5 @@
 import React, { useState} from 'react';
+import styles from '../stylesheets/login.css';
 
 async function signupUser(credentials) {
   return fetch('/signup', {
@@ -15,15 +16,16 @@ export const Signup = ({setToken}) => {
 
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
+  const [email, setEmail] = useState();
   
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const token = await signupUser({
+    await signupUser({
       username,
+      email,
       password
     });
-    setToken(token);
   };
 
   return(
@@ -31,17 +33,21 @@ export const Signup = ({setToken}) => {
       <h1>Sign up here</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          <p>Email</p>
+          <p>Name</p>
           <input type="text" onChange={e => setUserName(e.target.value)}/>
+        </label>
+        <label>
+          <p>Email</p>
+          <input type="text" onChange={e => setEmail(e.target.value)}/>
         </label>
         <label>
           <p>Password</p>
           <input type="password" onChange={e => setPassword(e.target.value)} />
         </label>
         <div>
-          <button type="submit">Submit</button>
+          <button className="submit" type="submit">Submit</button>
         </div>
       </form>
     </div>
   );
-}
+};
