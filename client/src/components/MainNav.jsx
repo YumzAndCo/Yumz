@@ -1,6 +1,7 @@
 import React from 'react';
 import MainNavItem from './MainNavItem.jsx';
 import { faBurger, faMugHot, faHeart } from '@fortawesome/free-solid-svg-icons';
+import styles from '../stylesheets/main-nav.css';
 
 const MainNav = props => {
   const onMainNavBtnClick = (event, btnName) => {
