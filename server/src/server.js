@@ -18,19 +18,14 @@ app.post('/signup', userController.createUser, (req, res) => {
 
 app.post('/login', userController.getUser, (req, res) => {
   // TODO: Finish this route and it's middleware
-<<<<<<< HEAD
   
   res.status(200);
   res.send(res.locals);
 
-=======
-  console.log('Login Details: ', req.params);
-  res.status(400).json(req.body);
->>>>>>> c6efbc6a37014eec7d0f3e24326271091c4ee6dc
 });
 
 // app.get('/reviews', collectionsController.getReviews, (req, res) => {
-//   res.status(200).send()
+//   res.status(200).send(res.locals.reviews)
 // })
 
 app.get('/', (req, res) => {
