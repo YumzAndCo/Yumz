@@ -20,12 +20,12 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/collection' element={<CollectionList />} />
-        <Route path='/landing' element={<Landing />} />
+        <Route path='/' element={<Landing />} />
         <Route path='/reviews' element={<Reviews />} />
         <Route path='/favorites' element={<Favorites />} />
         <Route path='/wishlist' element={<Wishlist />} />
         <Route path='/details-modal' element={<DetailsModal />} />
-        <Route path='/' element={<NewRestaurant />} />
+        <Route path='/new-restaurant' element={<NewRestaurant />} />
       </Routes>
     </div>
 
