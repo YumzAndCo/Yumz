@@ -5,9 +5,10 @@ body {
   margin: 10px;
 }
 .preview {
-  padding: 5px;
+  padding: 3px;
+  margin: 5px;
   background-color: #f3ebff;
-  border: 5px solid #aa8cd7;
+  border: 3px solid #aa8cd7;
   border-radius: 10px;
 }
 span {
@@ -21,6 +22,14 @@ span {
 .collectionTitle {
   padding: 10px;
   margin: 10px;
+  font: 100px;
   color: #474747;
-  border: 5px solid #aa8cd7;
+  font-family: 'Fredoka One', cursive;
+  /* border: 5px solid #aa8cd7; */
+}
+
+.previewButton {
+  border: none;
+  background-color: none;
+
 }

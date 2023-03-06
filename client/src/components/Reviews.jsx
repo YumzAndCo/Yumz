@@ -4,14 +4,22 @@ import { CollectionList } from './CollectionList.jsx';
 export const Reviews = () => {
 
   const [listItems, setListItems] = useState(
-    {
+    [{
       name: 'Ramen House',
       rating: 8,
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
       preview: 'Lorem ipsum...',
       id: 1
-    });
+    },
+    {
+      name: 'Ramen place',
+      rating: 8,
+      cuisine: 'Japanese',
+      hours: '11 am - 8 pm, 7 days/wk',
+      preview: 'Lorem ipsum...',
+      id: 2
+    }]);
 
   // useEffect(() => {
   //   async function fetchReviews() {
