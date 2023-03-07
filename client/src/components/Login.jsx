@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../stylesheets/login.css';
+import {useNavigate} from 'react-router-dom';
 
 async function loginUser(credentials) {
   return fetch('/login', {
@@ -9,24 +10,43 @@ async function loginUser(credentials) {
     },
     body: JSON.stringify(credentials)
   })
-    .then(data => data.json());
-}
+    .then(res => {
+      if (res.status === 200) {
+        return res.json();
+      }
+      else if (res.status === 300) {
+        return;
+      }
+    });
 
+}
 
 // This entire portion is used for react-router setup
 export const Login = () => {
-
+  const navigate = useNavigate();
+  
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-
   const handleSubmit = async e => {
     e.preventDefault();
-    await loginUser({
+    const signin = await loginUser({
       email,
       password
     });
+    if (!signin) {
+      resetForm();
+    }
+    else {
+      navigate('/');
+    }
     
+
+  };
+
+  const resetForm = () => {
+    setEmail('');
+    setPassword('');
   };
 
   return (

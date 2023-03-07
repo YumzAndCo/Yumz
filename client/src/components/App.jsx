@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import styles from '../stylesheets/styles.css';
 import { Login } from './Login.jsx';
@@ -10,15 +10,29 @@ import Landing from './Landing.jsx';
 import { CollectionList } from './CollectionList.jsx';
 import DetailsModal from './DetailsModal.jsx';
 import NewRestaurant from './NewRestaurant.jsx';
+import {useNavigate} from 'react-router-dom';
+import helperFns from '../helperFns.js';
+
+
 
 function App() {
+  useEffect(() => {
+    console.log(helperFns);
+    helperFns.getUserCoords();
+  }, []);
 
+  
+  // if (!authenticated) {
+  //   return (navigate('/signup'));
+  // }
   return (
+
     <div className="router">
 
       <Routes>
-        <Route path='/login' element={<Login />} />
+        
         <Route path='/signup' element={<Signup />} />
+        <Route path='/login' element={<Login />} />
         <Route path='/collection' element={<CollectionList />} />
         <Route path='/' element={<Landing />} />
         <Route path='/reviews' element={<Reviews />} />

@@ -48,6 +48,7 @@ userController.createUser = async (req, res, next) => {
     }
 
     const checkEmail = await db.query(`SELECT * FROM users WHERE email = '${email}'`);
+    console.log('!!!!!!!! checkEmail : ', checkEmail );
     if (checkEmail.rowCount !== 0){
       return next({
         log: 'email already exists',
@@ -68,11 +69,13 @@ userController.createUser = async (req, res, next) => {
     const created = await db.query(
       `INSERT INTO users (email, name, password) 
       VALUES ('${email}', '${name}', '${password}')`
-    )
+    );
+
+    // console.log(created);
     
     //getting that instance from the database and saving it to res.locals
     const queryResult = await db.query(`SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`);
-    res.locals.user = queryResult.rows[0]
+    res.locals.user = queryResult.rows[0];
     
     
     const userID = res.locals.user.user_id;
@@ -82,17 +85,17 @@ userController.createUser = async (req, res, next) => {
     await db.query(
       `INSERT INTO collection (user_id, name)
       VALUES ('${userID}', 'favorites')`
-    )
+    );
 
     await db.query(
       `INSERT INTO collection (user_id, name)
       VALUES ('${userID}', 'wishlist')`
-    )
+    );
 
     await db.query(
       `INSERT INTO collection (user_id, name)
       VALUES ('${userID}', 'reviews')`
-    )
+    );
 
     const userFavorites = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'favorites'`);
     const userWishlist = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'wishlist'`);
@@ -102,7 +105,7 @@ userController.createUser = async (req, res, next) => {
       userFavorites: userFavorites,
       userWishList: userWishlist,
       userReviews: userReviews
-    }
+    };
 
     res.locals.collections = collections;
     
@@ -110,7 +113,7 @@ userController.createUser = async (req, res, next) => {
 
   } catch(error){
     return next({
-      log: 'userController.createUser()',
+      log: 'userController.createUser() ERROR',
       message: {err: error}
     });
   }
