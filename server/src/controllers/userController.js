@@ -73,7 +73,7 @@ userController.createUser = async (req, res, next) => {
     
     //getting that instance from the database and saving it to res.locals
     const queryResult = await db.query(`SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`);
-    res.locals.user = queryResult.rows[0]
+    res.locals.user = queryResult.rows[0];
     
     
     const userID = res.locals.user.user_id;
@@ -103,7 +103,7 @@ userController.createUser = async (req, res, next) => {
       userFavorites: userFavorites,
       userWishList: userWishlist,
       userReviews: userReviews
-    }
+    };
 
     res.locals.collections = collections;
     

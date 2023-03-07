@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const userController = require('./controllers/userController');
+const restaurantController = require('./controllers/restaurantController');
+const collectionsController = require('./controllers/collectionsController');
 
 const app = express();
 const apiRouter = require('./routes/apiRouter');
@@ -24,8 +26,23 @@ app.post('/login', userController.getUser, (req, res) => {
 
 });
 
+app.post('/addToWishlist', restaurantController.addRestaurant, collectionsController.addToWishlist, (req, res) => {
+  res.status(200);
+  res.send(res.locals);
+});
+
+app.post('/addToFavorites', restaurantController.addRestaurant, collectionsController.addToFavorites, (req, res) => {
+  res.status(200);
+  res.send(res.locals);
+});
+
+app.post('/addToReviews', restaurantController.addRestaurant, collectionsController.addToReviews, (req, res) => {
+  res.status(200);
+  res.send(res.locals);
+});
+
 // app.get('/reviews', collectionsController.getReviews, (req, res) => {
-//   res.status(200).send(res.locals.reviews)
+//   res.status(200).send()
 // })
 
 app.get('/', (req, res) => {
