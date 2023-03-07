@@ -6,14 +6,18 @@ import styles from '../stylesheets/new-restaurant.css';
 import detailStyles from '../stylesheets/details-modal.css';
 import RatingNotes from './RatingNotes.jsx';
 import helperFns from '../helperFns.js';
+import { useNavigate } from 'react-router-dom';
 
 const NewRestaurant = props => {
   const [restaurantInfo, setRestaurantInfo] = useState(null);
   const [searchResults, setSearchResults] = useState({});
 
+  const navigate = useNavigate();
+
   const submitRestaurantName = async (event) => {
     try {
       event.preventDefault();
+      console.log(event.currentTarget);
       const nameInput = document.querySelector('#restaurant-name-input');
       const restaurantName = nameInput.value;
       if (!restaurantName.length) {
@@ -22,15 +26,30 @@ const NewRestaurant = props => {
         return;
       }
 
-      // TODO - not handling scenario where no search results come back..
-      console.log('submitRestaurantName, searching for restaurant name:', restaurantName);
-      const userCoords = helperFns.retrieveUserCoords();
-      const latitude = Object.hasOwn(userCoords, 'latitude') ? userCoords.latitude : null;
-      const longitude = Object.hasOwn(userCoords, 'longitude') ? userCoords.longitude : null;
+      const locationInput = document.querySelector('#restaurant-location-input');
+      const locationVal = locationInput.value;
+
       let requestUrl = `/api/search?query=${restaurantName}`;
-      if (latitude && longitude) {
-        requestUrl += `&latitude=${latitude}&longitude=${longitude}`;
+
+      // - Modify the URL based on what the user input for the location
+      // - If they selected Current Location, try using the user's geolocation coordinates
+      // - Otherwise for a non-empty string value, append it to the query param
+      // - For an empty string, Google Places API will default to user's location (based on IP address of req?)
+      if (locationVal === 'Current Location') {
+        const userCoords = helperFns.retrieveUserCoords();
+        const latitude = Object.hasOwn(userCoords, 'latitude') ? userCoords.latitude : null;
+        const longitude = Object.hasOwn(userCoords, 'longitude') ? userCoords.longitude : null;
+
+        if (latitude && longitude) {
+          requestUrl += `&latitude=${latitude}&longitude=${longitude}`;
+        }
+      } else if (locationVal.length) {
+        requestUrl += ` near ${locationVal}`;
       }
+      // TODO - not handling scenario where no search results come back..
+      console.log('submitRestaurantName, searching for restaurant name:', restaurantName,
+        'location val: ', locationVal);
+
       console.log('NewRestaurant sending request to ', requestUrl);
       const response = await fetch(requestUrl);
       const jsonSearchResults = await response.json();
@@ -87,6 +106,14 @@ const NewRestaurant = props => {
     // TO DO - post request to /restaurant
   };
 
+  const onReturnSearchBtnClick = () => {
+    setSearchResults({});
+  };
+
+  const onReturnHomeBtnClick = () => {
+    navigate('/');
+  };
+
   const searchResultItems = [];
   for (const [googlePlaceId, googlePlaceInfo] of Object.entries(searchResults)) {
     searchResultItems.push(
@@ -101,33 +128,60 @@ const NewRestaurant = props => {
   }
 
   if (searchResultItems.length > 0) {
+    // VIEW SEARCH RESULTS
     return (
       <div id='new-restaurant-info'>
         <div id='new-restaurant-header'>Search Results</div>
+        <button
+          className='new-restaurant-button'
+          onClick={onReturnSearchBtnClick}>
+          Return to Search
+        </button>
         {searchResultItems}
         {/* Skipping next button functionality for now..
         <button id='next-button'>Next</button> */}
       </div>
     );
   } else if (restaurantInfo === null) {
+    // SEARCH FOR A RESTAURANT
     return (
       <div id='new-restaurant-info'>
         <div id='new-restaurant-header'>Add a Restaurant</div>
-        <div id='new-restaurant-prompt'>What is the name of the restaurant?</div>
+        <div className='new-restaurant-prompt'>What is the name of the restaurant?</div>
         <form
           onSubmit={(event) => submitRestaurantName(event)}
           autoComplete='off'>
           <input
             id='restaurant-name-input'
             name='restaurant-name-input'
+            className='new-restaurant-input'
             type='text' /><br />
+          <label className='new-restaurant-prompt'
+            htmlFor='restaurant-location-input'>
+            Add a location to search in?
+          </label><br />
+          <input
+            id='restaurant-location-input'
+            name='restaurant-location-input'
+            className='new-restaurant-input'
+            type='text'
+            list='location-options' />
+          <datalist id='location-options'>
+            <option value='Current Location' />
+          </datalist>
+          <br />
+          <button id='return-home-btn'
+            type='button'
+            className='new-restaurant-button'
+            onClick={onReturnHomeBtnClick}>Return Home</button>
           <input type='submit'
             value='Next'
-            className='submit-button'></input>
+            className='new-restaurant-button'></input>
         </form>
       </div>
     );
   } else {
+    // VIEW RESTAURANT DETAILS
     return (
       <div id='new-restaurant-info'>
         <div id="restaurant-name">{restaurantInfo.name}</div>
