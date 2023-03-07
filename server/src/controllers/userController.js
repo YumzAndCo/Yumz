@@ -70,8 +70,11 @@ userController.createUser = async (req, res, next) => {
       `INSERT INTO users (email, name, password) 
       VALUES ('${email}', '${name}', '${password}')`
     );
+<<<<<<< HEAD
+=======
 
     // console.log(created);
+>>>>>>> 24e1cb637fda611d70b8c7595d40f2fb0fa9ce8e
     
     //getting that instance from the database and saving it to res.locals
     const queryResult = await db.query(`SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`);
