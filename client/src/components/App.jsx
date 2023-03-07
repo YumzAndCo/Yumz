@@ -10,7 +10,10 @@ import Landing from './Landing.jsx';
 import { CollectionList } from './CollectionList.jsx';
 import DetailsModal from './DetailsModal.jsx';
 import NewRestaurant from './NewRestaurant.jsx';
+import {useNavigate} from 'react-router-dom';
 import helperFns from '../helperFns.js';
+
+
 
 function App() {
   useEffect(() => {
@@ -18,12 +21,18 @@ function App() {
     helperFns.getUserCoords();
   }, []);
 
+  
+  // if (!authenticated) {
+  //   return (navigate('/signup'));
+  // }
   return (
+
     <div className="router">
 
       <Routes>
-        <Route path='/login' element={<Login />} />
+        
         <Route path='/signup' element={<Signup />} />
+        <Route path='/login' element={<Login />} />
         <Route path='/collection' element={<CollectionList />} />
         <Route path='/' element={<Landing />} />
         <Route path='/reviews' element={<Reviews />} />
