@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const userController = require('./controllers/userController');
+const cookieController = require('./controllers/cookieController');
+const sessionController = require('./controllers/sessionController');
 
 const app = express();
 const apiRouter = require('./routes/apiRouter');
@@ -10,18 +12,16 @@ app.use(express.json());
 
 app.use('/api', apiRouter);
 
-app.post('/signup', userController.createUser, (req, res) => {
+app.post('/signup', userController.createUser, cookieController.setJWTCookie, sessionController.startSession, (req, res) => {
   // TODO: Finish this route and it's middleware
-  res.status(200);
-  res.send(res.locals);
+  if (res.locals.status === 300) return res.sendStatus(300);
+  res.sendStatus(200);
 });
 
-app.post('/login', userController.getUser, (req, res) => {
+app.post('/login', userController.verifyUser, cookieController.setJWTCookie, sessionController.startSession, (req, res) => {
   // TODO: Finish this route and it's middleware
-  
-  res.status(200);
-  res.send(res.locals);
-
+  if (res.locals.status === 300) return res.sendStatus(300);
+  res.sendStatus(200);
 });
 
 // app.get('/reviews', collectionsController.getReviews, (req, res) => {

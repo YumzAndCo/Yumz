@@ -3,6 +3,7 @@ const path = require('path');
 require('dotenv').config();
 
 const googlePlacesAPIController = require('../controllers/googlePlacesAPIController');
+const yelpFusionAPIController = require('../controllers/yelpFusionAPIController');
 
 const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 
@@ -18,5 +19,7 @@ router.get('/results-next-page', googlePlacesAPIController.getNextPage, (req, re
 
 router.get('/place-details', googlePlacesAPIController.getPlaceDetails, (req, res) => {
   return res.status(200).json(res.locals.placeDetailsResults);
+  // return res.status(200).json(res.locals.restaurantDetailsResults);
 });
+
 module.exports = router;
