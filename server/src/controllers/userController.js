@@ -14,7 +14,7 @@ const userController = {};
 userController.getUser = async (req, res, next) => {
   try {
     //test: console-log params to make sure params are being sent over
-    const {email, password} = req.body
+    const {email, password} = req.body;
 
     //test: ensure req.params are appropriately saved as consts
     // console.log('email: ', email,  'password : ', password)
@@ -69,7 +69,7 @@ userController.createUser = async (req, res, next) => {
     const created = await db.query(
       `INSERT INTO users (email, name, password) 
       VALUES ('${email}', '${name}', '${password}')`
-    )
+    );
     
     //getting that instance from the database and saving it to res.locals
     const queryResult = await db.query(`SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`);
@@ -83,17 +83,17 @@ userController.createUser = async (req, res, next) => {
     await db.query(
       `INSERT INTO collection (user_id, name)
       VALUES ('${userID}', 'favorites')`
-    )
+    );
 
     await db.query(
       `INSERT INTO collection (user_id, name)
       VALUES ('${userID}', 'wishlist')`
-    )
+    );
 
     await db.query(
       `INSERT INTO collection (user_id, name)
       VALUES ('${userID}', 'reviews')`
-    )
+    );
 
     const userFavorites = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'favorites'`);
     const userWishlist = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'wishlist'`);
