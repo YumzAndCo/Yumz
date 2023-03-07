@@ -11,18 +11,15 @@ import { CollectionList } from './CollectionList.jsx';
 import DetailsModal from './DetailsModal.jsx';
 import NewRestaurant from './NewRestaurant.jsx';
 import {useNavigate} from 'react-router-dom';
+import helperFns from '../helperFns.js';
 
 
 
 function App() {
-  // const [authenticated, setauthenticated] = useState(null);
-  // useEffect(() => {
-  //   const loggedInUser = localStorage.getItem('authenticated');
-  //   if (loggedInUser) {
-  //     setauthenticated(loggedInUser);
-  //   }
-  // }, []);
-  // const navigate = useNavigate();
+  useEffect(() => {
+    console.log(helperFns);
+    helperFns.getUserCoords();
+  }, []);
 
   
   // if (!authenticated) {

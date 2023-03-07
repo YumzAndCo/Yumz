@@ -8,7 +8,13 @@ const VerticalNav = props => {
 
   const navigate = useNavigate();
   const onNavItemClick = (event, btnName) => {
-    navigate('/login');
+    switch (btnName) {
+      case 'add-restaurant':
+        navigate('/new-restaurant');
+        break;
+      default:
+        navigate('/login');
+    }
   };
 
   return (
@@ -20,11 +26,11 @@ const VerticalNav = props => {
       <VerticalNavItem
         iconName={faPlus}
         btnName="add-restaurant"
-        onClickHandler={onNavItemClick} />
-      <VerticalNavItem
+        onClickHandler={(event) => onNavItemClick(event, 'add-restaurant')} />
+      {/* <VerticalNavItem
         iconName={faBook}
         btnName="user"
-        onClickHandler={onNavItemClick} />
+        onClickHandler={onNavItemClick} /> */}
     </div>
   );
 };
