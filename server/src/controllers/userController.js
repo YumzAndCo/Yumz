@@ -11,7 +11,7 @@ const createError = (errorInfo) => {
 
 const userController = {};
 
-userController.getUser = async (req, res, next) => {
+userController.verifyUser = async (req, res, next) => {
   try {
     //test: console-log params to make sure params are being sent over
     const {email, password} = req.body;
@@ -20,11 +20,10 @@ userController.getUser = async (req, res, next) => {
     // console.log('email: ', email,  'password : ', password)
 
     const queryResult = await db.query(`SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`);
+    console.log(queryResult.rows[0]);
 
-    res.locals = queryResult.rows[0];
-    
-
-    // console.log('res.locals: ', res.locals)
+    // res.locals.userDetails = queryResult.rows;
+    if (queryResult.rows[0] === undefined) res.locals.status = 300;
     return next();
   }
   catch (error){
