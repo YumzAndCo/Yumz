@@ -10,9 +10,10 @@ import {useNavigate} from 'react-router-dom';
 const Landing = props => {
   // const [goToLogin, setGoToLogin] = useState(false);
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!sessionStorage.cookie) navigate('/login');
-  });
+  // useEffect(() => {
+  //   navigate('/login');
+    
+  // });
 
   return (
     <div id='landing'>

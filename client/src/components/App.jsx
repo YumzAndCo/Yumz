@@ -21,10 +21,6 @@ function App() {
     helperFns.getUserCoords();
   }, []);
 
-  
-  // if (!authenticated) {
-  //   return (navigate('/signup'));
-  // }
   return (
 
     <div className="router">

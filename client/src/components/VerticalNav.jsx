@@ -9,11 +9,11 @@ const VerticalNav = props => {
   const navigate = useNavigate();
   const onNavItemClick = (event, btnName) => {
     switch (btnName) {
-      case 'add-restaurant':
-        navigate('/new-restaurant');
-        break;
-      default:
-        navigate('/login');
+    case 'add-restaurant':
+      navigate('/new-restaurant');
+      break;
+    default:
+      navigate('/login');
     }
   };
 
@@ -22,7 +22,7 @@ const VerticalNav = props => {
       <VerticalNavItem
         iconName={faFaceSmile}
         btnName="user"
-        onClickHandler={(e) => navigate('/signup')} />
+        onClickHandler={(e) => navigate('/login')} />
       <VerticalNavItem
         iconName={faPlus}
         btnName="add-restaurant"
