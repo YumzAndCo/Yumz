@@ -1,27 +1,51 @@
-const sessionController = {};
+const Jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-/**
-* isLoggedIn - find the appropriate session for this request in the database, then
-* verify whether or not the session is still valid.
-*/
-sessionController.isLoggedIn = (req, res, next) => {
-  // write code here
-  console.log('sessionController.isLoggedIn res.cookies = ', res.cookies)
-  next()
+const verifyJWT = token => {
+  return Jwt.verify(token, process.env.JWT_SECRET_KEY);
 };
 
-/**
-* startSession - create and save a new Session into the database.
-*/
-sessionController.startSession = (req, res, next) => {
-  //write code here
-  res.locals.SSID = res.locals.user[0]._id.toString();
-  Session.create({cookieId: res.locals.SSID}, (err, data) => {
-    // console.log('Session created', data)
+const createError = (errorInfo) => {
+  const {method, type, error} = errorInfo;
+  return {
+    log: `sessionController.${method} ${type}: ERROR: ${typeof error === 'object' ? JSON.stringify(error):error}`,
+    message: {err: `error occurreed in sessionController.${method}. Check server logs for more details.`}
+  };
+};
+
+const sessionController = {};
+
+sessionController.isLoggedIn = async (req, res, next) => {
+  try {
+    const isValidJWT = verifyJWT(req.cookies.JWT);
+    if (!isValidJWT) res.locals.status = 300; // This code will bug and always return a status of 300 but for now is unused
     return next();
-  });
-  
-  
+  } catch (error) {
+    return next(createError({
+      method: 'isLoggedIn',
+      type: ' ',
+      error
+    }));
+  }
+};
+
+sessionController.startSession = async (req, res, next) => {
+  try {
+    // console.log(res.locals.JWT);
+    const isValidJWT = verifyJWT(res.locals.JWT);
+    // This is really ugly and should be refactored eventually
+    if (isValidJWT) {
+      return next();
+    }
+    res.locals.status = 300;
+    return next();
+  } catch (error) {
+    return next(createError({
+      method: 'startSession',
+      type: ' ',
+      error
+    }));
+  }
 };
 
 module.exports = sessionController;

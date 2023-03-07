@@ -1,5 +1,6 @@
 import React, { useState} from 'react';
 import styles from '../stylesheets/login.css';
+import {useNavigate} from 'react-router-dom';
 
 async function signupUser(credentials) {
   return fetch('/signup', {
@@ -10,11 +11,12 @@ async function signupUser(credentials) {
     body: JSON.stringify(credentials)
   })
     .then(data => data.json());
+    
 }
 
-export const Signup = ({setToken}) => {
-
-  const [username, setUserName] = useState();
+export const Signup = () => {
+  const navigate = useNavigate();
+  const [name, setName] = useState();
   const [password, setPassword] = useState();
   const [email, setEmail] = useState();
   
@@ -22,10 +24,11 @@ export const Signup = ({setToken}) => {
   const handleSubmit = async e => {
     e.preventDefault();
     await signupUser({
-      username,
+      name,
       email,
       password
     });
+    navigate('/');
   };
 
   return(
@@ -34,7 +37,7 @@ export const Signup = ({setToken}) => {
       <form onSubmit={handleSubmit}>
         <label>
           <p>Name</p>
-          <input type="text" onChange={e => setUserName(e.target.value)}/>
+          <input type="text" onChange={e => setName(e.target.value)}/>
         </label>
         <label>
           <p>Email</p>

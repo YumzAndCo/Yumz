@@ -135,6 +135,12 @@ googlePlacesAPIController.getPlaceDetails = async (req, res, next) => {
       if (details === undefined) sortedPlaceDetails[key] = 'N/A';
     }
 
+    // Testing for Yelp API
+    // res.locals.placeDetailsResults = placeDetailsResults;
+    res.locals.name = placeDetailsResults.name;
+    res.locals.latitude = placeDetailsResults.geometry.location.lat;
+    res.locals.longitude = placeDetailsResults.geometry.location.lng;
+
     res.locals.placeDetailsResults = sortedPlaceDetails;
     return next();
   } catch (error) {

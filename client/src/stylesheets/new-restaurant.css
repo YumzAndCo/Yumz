@@ -1,5 +1,4 @@
-.submit-button {
-  margin-top: 1rem;
+.new-restaurant-button {
   margin-bottom: 1rem;
   padding: 0 2rem;
   height: 2.5rem;
@@ -12,7 +11,7 @@
   color: #522952;
 }
 
-.submit-button:hover {
+.new-restaurant-button:hover {
   background-color: #ff7621;
 }
 
@@ -39,14 +38,20 @@
   margin-bottom: 1rem;
 }
 
-#new-restaurant-prompt {
+.new-restaurant-prompt {
   font-size: 2rem;
-  margin-bottom: 1rem;
 }
 
-#restaurant-name-input {
+.new-restaurant-input {
   height: 2rem;
   width: 50rem;
   border: 1px solid #884488;
   border-radius: 3px;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  padding-left: 1rem;
+}
+
+#return-home-btn {
+  margin-right: 30rem;
 }

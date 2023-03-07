@@ -11,7 +11,7 @@ const createError = (errorInfo) => {
 
 const userController = {};
 
-userController.getUser = async (req, res, next) => {
+userController.verifyUser = async (req, res, next) => {
   try {
     //test: console-log params to make sure params are being sent over
     const {email, password} = req.body;
@@ -20,11 +20,10 @@ userController.getUser = async (req, res, next) => {
     // console.log('email: ', email,  'password : ', password)
 
     const queryResult = await db.query(`SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`);
+    console.log(queryResult.rows[0]);
 
-    res.locals = queryResult.rows[0];
-    
-
-    // console.log('res.locals: ', res.locals)
+    // res.locals.userDetails = queryResult.rows;
+    if (queryResult.rows[0] === undefined) res.locals.status = 300;
     return next();
   }
   catch (error){
@@ -49,6 +48,7 @@ userController.createUser = async (req, res, next) => {
     }
 
     const checkEmail = await db.query(`SELECT * FROM users WHERE email = '${email}'`);
+    console.log('!!!!!!!! checkEmail : ', checkEmail );
     if (checkEmail.rowCount !== 0){
       return next({
         log: 'email already exists',
@@ -70,6 +70,11 @@ userController.createUser = async (req, res, next) => {
       `INSERT INTO users (email, name, password) 
       VALUES ('${email}', '${name}', '${password}')`
     );
+<<<<<<< HEAD
+=======
+
+    // console.log(created);
+>>>>>>> 24e1cb637fda611d70b8c7595d40f2fb0fa9ce8e
     
     //getting that instance from the database and saving it to res.locals
     const queryResult = await db.query(`SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`);
@@ -111,7 +116,7 @@ userController.createUser = async (req, res, next) => {
 
   } catch(error){
     return next({
-      log: 'userController.createUser()',
+      log: 'userController.createUser() ERROR',
       message: {err: error}
     });
   }
