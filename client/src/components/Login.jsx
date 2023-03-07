@@ -12,10 +12,10 @@ async function loginUser(credentials) {
   })
     .then(res => {
       if (res.status === 200) {
-        return res.json();
+        return res;
       }
       else if (res.status === 300) {
-        return;
+        return false;
       }
     });
 
@@ -37,9 +37,8 @@ export const Login = () => {
     if (!signin) {
       resetForm();
     }
-    else {
-      navigate('/');
-    }
+    navigate('/');
+    
     
 
   };
@@ -61,6 +60,11 @@ export const Login = () => {
           <p>Password</p>
           <input type="password" onChange={e => setPassword(e.target.value)} />
         </label>
+        <div>
+        <label>
+          <button className="signupButton" type="button" onClick={e => navigate('/signup')}>No account yet?</button>
+        </label>
+        </div>
         <div>
           <button className="submit" type="submit">Submit</button>
         </div>
