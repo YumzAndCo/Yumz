@@ -17,9 +17,9 @@ collectionsController.getRatings = async (req, res, next) => {
     const userRatings = await db.query(
       `SELECT r.* FROM rating r
       JOIN users u ON r.user_id = u.user_id
-      JOIN restaurants rest ON r.restaurant_id = rest.id
+      JOIN restaurant rest ON r._id = rest.i_d
       WHERE r.user_id = '${userID}'
-      AND r.restaurant_id = '${restaurantID}'
+      AND r._id = '${restaurantID}'
       AND rest.is_reviewed = true`
     );
     res.locals.userRatings = userRatings.rows;
@@ -37,7 +37,9 @@ collectionsController.getFavorites = async (req, res, next) => {
   try {
     const { userID } = req.body;
     const userFavorites = await db.query(
-      `SELECT * FROM users WHERE user_id = '${userID}' AND name = 'favorites'`
+      `SELECT r.* FROM restaurant r
+      JOIN users u ON r.user_id = u._id
+      WHERE r.user_id = '${userID}' AND r.is_favorite = true`
     );
   } catch (error) {
     return next({
@@ -52,7 +54,10 @@ collectionsController.getWishlist = async (req, res, next) => {
   try {
     const { userID } = req.body;
     const userWishlist = await db.query(
-      `SELECT * FROM users WHERE user_id = '${userID}' AND name = 'wishlist'`
+      `SELECT *
+      FROM users u
+      JOIN restaurant r ON u._id = r.user_id
+      WHERE u._id = '${userID}' AND r.is_wishlist = true;`
     );
   } catch (error) {
     return next({
@@ -87,8 +92,8 @@ collectionsController.addToWishlist = async (req, res, next) => {
 collectionsController.addToReviews = async (req, res, next) => {
   try {
     const {
-      userID,
       restaurantID,
+      userID,
       dateUpdated,
       overallScore,
       serviceScore,
@@ -99,8 +104,8 @@ collectionsController.addToReviews = async (req, res, next) => {
     } = req.body;
 
     await db.query(
-      `INSERT INTO rating (user_id, restaurant_id, date_updated, overall_score, service_score, food_score, atmosphere_score, price_score, notes)
-      VALUES ('${userID}', '${restaurantID}', '${dateUpdated}', '${overallScore}', '${serviceScore}', '${foodScore}', '${atmosphereScore}', '${priceScore}', '${notes}')`
+      `INSERT INTO rating (_id, user_id, date_updated, overall_score, service_score, food_score, atmosphere_score, price_score, notes)
+      VALUES ('${restaurantID}', '${userID}', '${dateUpdated}', '${overallScore}', '${serviceScore}', '${foodScore}', '${atmosphereScore}', '${priceScore}', '${notes}')`
     );
     return next();
   } catch (error) {
