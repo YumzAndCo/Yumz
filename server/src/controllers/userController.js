@@ -1,126 +1,99 @@
 const { query } = require('express');
 const db = require('../models/userModels.js');
+const bcrypt = require('bcrypt');
+const Jwt = require('jsonwebtoken');
 
-const createError = (errorInfo) => {
-  const { method, type, error } = errorInfo;
-  return {
-    log: `userController.${method} ${type}: ERROR: ${typeof error === 'object' ? JSON.stringify(error) : error}`,
-    message: { err: `error occurreed in userController.${method}. Check server logs for more details.` }
-  };
+// Helper functions to verify JWT token and compare bcrypt passwords
+const verifyJWT = (token) => {
+  return Jwt.verify(token, process.env.JWT_SECRET_KEY);
+};
+const comparePassword = async (password, hashed) => {
+  return await bcrypt.compare(password, hashed);
 };
 
 const userController = {};
 
-userController.verifyUser = async (req, res, next) => {
+// Protects our API route
+userController.protect = (req, res, next) => {
   try {
-    //test: console-log params to make sure params are being sent over
-    const { email, password } = req.body;
+    const isValidJWT = verifyJWT(req.cookies.JWT);
+    if (!isValidJWT) res.status(401).json({ message: 'User is not logged in' });
 
-    //test: ensure req.params are appropriately saved as consts
-    // console.log('email: ', email,  'password : ', password)
-
-    const queryResult = await db.query(`SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`);
-    console.log(queryResult.rows[0]);
-
-    // res.locals.userDetails = queryResult.rows;
-    if (queryResult.rows[0] === undefined) res.locals.status = 300;
     return next();
-  }
-  catch (error) {
-    next({
-      log: 'error running getUser middleware. ',
-      message: 'an error occurred trying to find user'
+  } catch (error) {
+    return next({
+      log: 'error running userController.protect middleware.',
+      status: 401,
+      message: { message: 'Not valid token' },
     });
   }
 };
 
+// Verifies if user password matches
+userController.verifyUser = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    let hashedPassword = await db.query(
+      `SELECT email, password FROM users WHERE email = '${email}'`
+    );
+    hashedPassword = hashedPassword.rows[0].password;
+
+    const isValidPW = await comparePassword(password, hashedPassword);
+
+    if (!isValidPW) {
+      return res.status(401).json({ message: 'Wrong password' });
+    }
+    return next();
+  } catch (error) {
+    return next({
+      log: 'error running userController.verifyUser middleware.',
+      status: 400,
+      message: { err: error },
+    });
+  }
+};
+
+// Creates user and also checks if the user exists in DB.
 userController.createUser = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
-    console.log(req.body);
-    // TODO: change from truthy to different logic later
-    if (!name || !password || !email) {
-      return next(createError({
-        method: 'createUser',
-        type: 'all fields must be filled',
-        error: 'all fields must be filled'
-      }));
-    }
+    console.log('in createUser');
+    const { name, email } = req.body;
+    let { password } = req.body;
 
-    const checkEmail = await db.query(`SELECT * FROM users WHERE email = '${email}'`);
-    console.log('!!!!!!!! checkEmail : ', checkEmail);
+    const checkEmail = await db.query(
+      `SELECT email FROM users WHERE email = '${email}'`
+    );
+    console.log(`Checking if email:${email} exists in DB.`);
     if (checkEmail.rowCount !== 0) {
       return next({
         log: 'email already exists',
-        message: { err: 'email already exists' }
+        status: 400,
+        message: { err: 'email already exists' },
       });
     }
 
-    // CHECKS TO SEE IF NAME IS UNIQUE
-    // const checkName = await db.query(`SELECT * FROM users WHERE name = '${name}'`);
-    // if (checkName.rowCount !== 0){
-    //   return next({
-    //     log: 'name already exists',
-    //     message: {err: 'email already exists'}
-    //   });
-    // }
-
-    //creating the user instance in the database
-    const created = await db.query(
-      `INSERT INTO users (email, name, password) 
+    password = await bcrypt.hash(password, 5);
+    console.log(`Creating user for:${name}`);
+    await db.query(
+      `INSERT INTO users (email, name, password)
       VALUES ('${email}', '${name}', '${password}')`
     );
-    // <<<<<<< HEAD
-    // =======
-
-    //     // console.log(created);
-    // >>>>>>> 24e1cb637fda611d70b8c7595d40f2fb0fa9ce8e
-
     //getting that instance from the database and saving it to res.locals
-    const queryResult = await db.query(`SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`);
+    const queryResult = await db.query(
+      `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`
+    );
     res.locals.user = queryResult.rows[0];
-
 
     const userID = res.locals.user.user_id;
 
-
-    //creating three new instances of Collections based on that user's userID
-    await db.query(
-      `INSERT INTO collection (user_id, name)
-      VALUES ('${userID}', 'favorites')`
-    );
-
-    await db.query(
-      `INSERT INTO collection (user_id, name)
-      VALUES ('${userID}', 'wishlist')`
-    );
-
-    await db.query(
-      `INSERT INTO collection (user_id, name)
-      VALUES ('${userID}', 'reviews')`
-    );
-
-    const userFavorites = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'favorites'`);
-    const userWishlist = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'wishlist'`);
-    const userReviews = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'reviews'`);
-
-    const collections = {
-      userFavorites: userFavorites,
-      userWishList: userWishlist,
-      userReviews: userReviews
-    };
-
-    res.locals.collections = collections;
-
     return next();
-
   } catch (error) {
     return next({
-      log: 'userController.createUser() ERROR',
-      message: { err: error }
+      log: 'error running userController.createUser middleware',
+      status: 400,
+      message: { err: error },
     });
   }
 };
-
 
 module.exports = userController;

@@ -1,50 +1,39 @@
 const Jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const verifyJWT = token => {
+const verifyJWT = (token) => {
   return Jwt.verify(token, process.env.JWT_SECRET_KEY);
 };
 
-const createError = (errorInfo) => {
-  const {method, type, error} = errorInfo;
-  return {
-    log: `sessionController.${method} ${type}: ERROR: ${typeof error === 'object' ? JSON.stringify(error):error}`,
-    message: {err: `error occurreed in sessionController.${method}. Check server logs for more details.`}
-  };
-};
-
 const sessionController = {};
-
+// NEEDS REFACTORING OF SESSION CONTROLLER AND LOGGED IN STATUS.
 sessionController.isLoggedIn = async (req, res, next) => {
   try {
     const isValidJWT = verifyJWT(req.cookies.JWT);
-    if (!isValidJWT) res.locals.status = 300; // This code will bug and always return a status of 300 but for now is unused
+    if (!isValidJWT) res.status(401).json({ message: 'Invalid JWT' }); // This code will bug and always return a status of 300 but for now is unused
+
     return next();
   } catch (error) {
-    return next(createError({
-      method: 'isLoggedIn',
-      type: ' ',
-      error
-    }));
+    return next({
+      log: 'error running sessionController.isLoggedIn middleware.',
+      status: 401,
+      message: { err: error },
+    });
   }
 };
 
 sessionController.startSession = async (req, res, next) => {
   try {
-    // console.log(res.locals.JWT);
     const isValidJWT = verifyJWT(res.locals.JWT);
-    // This is really ugly and should be refactored eventually
-    if (isValidJWT) {
-      return next();
-    }
-    res.locals.status = 300;
-    return next();
+    if (!isValidJWT) res.status(401).json({ message: 'Invalid JWT' });
+
+    res.json({ message: 'Successful Login' });
   } catch (error) {
-    return next(createError({
-      method: 'startSession',
-      type: ' ',
-      error
-    }));
+    return next({
+      log: 'error running sessionController.startSession middleware.',
+      status: 401,
+      message: { err: error },
+    });
   }
 };
 
