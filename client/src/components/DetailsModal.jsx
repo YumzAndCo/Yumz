@@ -5,7 +5,6 @@ import RatingNotes from './RatingNotes.jsx';
 import styles from '../stylesheets/details-modal.css';
 
 const DetailsModal = props => {
-
   const onSaveChangesBtnClick = () => {
     // TO DO
     // Should make a request to PATCH /rating with changes
