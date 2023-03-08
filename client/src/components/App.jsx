@@ -7,7 +7,7 @@ import { Reviews } from './Reviews.jsx';
 import { Favorites } from './Favorites.jsx';
 import { Wishlist } from './Wishlist.jsx';
 import Landing from './Landing.jsx';
-import { CollectionList } from './CollectionList.jsx';
+import CollectionList from './CollectionList.jsx';
 import DetailsModal from './DetailsModal.jsx';
 import NewRestaurant from './NewRestaurant.jsx';
 import { useNavigate } from 'react-router-dom';

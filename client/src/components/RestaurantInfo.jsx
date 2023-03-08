@@ -101,7 +101,6 @@ const RestaurantInfo = props => {
 };
 
 const Detail = props => {
-
   if (Object.hasOwn(props, 'url')) {
     return (
       <div className="restaurant-detail">

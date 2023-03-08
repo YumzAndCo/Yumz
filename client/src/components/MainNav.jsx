@@ -1,8 +1,8 @@
 import React from 'react';
-import MainNavItem from './MainNavItem.jsx';
 import { faBurger, faMugHot, faHeart } from '@fortawesome/free-solid-svg-icons';
 import styles from '../stylesheets/main-nav.css';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const MainNav = props => {
   const navigate = useNavigate();
@@ -33,6 +33,20 @@ const MainNav = props => {
         btnText="Favorites"
         onClickHandler={(e) => navigate('/favorites')} />
     </div>
+  );
+};
+
+const MainNavItem = props => {
+  return (
+    <button
+      id={props.btnId}
+      className="main-nav-btn"
+      onClick={(event) => props.onClickHandler(event, props.btnText)}>
+      {props.btnText}<br />
+      <FontAwesomeIcon
+        icon={props.iconName}
+        className="main-nav-icon" />
+    </button>
   );
 };
 
