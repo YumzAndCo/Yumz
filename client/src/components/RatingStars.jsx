@@ -22,7 +22,7 @@ const RatingStars = props => {
 
   const stars = [];
   let filledStarsCount = 0;
-  for (let i = 1; i < 11; i++) {
+  for (let i = 1; i < 6; i++) {
     let star;
     if (filledStarsCount < numFilledStars) {
       star =
