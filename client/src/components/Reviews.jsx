@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { CollectionList } from './CollectionList.jsx';
+import CollectionList from './CollectionList.jsx';
 
 export const Reviews = () => {
 
@@ -30,7 +30,7 @@ export const Reviews = () => {
   //   fetchReviews();
   // });
   return (
-    <CollectionList restaurants={listItems} listName="Reviews"/>
+    <CollectionList restaurants={listItems} listName="Reviews" />
   );
 };
 

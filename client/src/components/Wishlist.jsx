@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { CollectionList } from './CollectionList.jsx';
+import CollectionList from './CollectionList.jsx';
 
 export const Wishlist = () => {
 
@@ -14,7 +14,7 @@ export const Wishlist = () => {
     fetchReviews();
   });
   return (
-    <CollectionList listName="Wishlist"/>
+    <CollectionList listName="Wishlist" />
   );
 };
 
