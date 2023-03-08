@@ -1,25 +1,35 @@
 const { query } = require('express');
 const db = require('../models/userModels.js');
 const bcrypt = require('bcrypt');
+const Jwt = require('jsonwebtoken');
 
-const createError = (errorInfo) => {
-  const { method, type, error } = errorInfo;
-  return {
-    log: `userController.${method} ${type}: ERROR: ${
-      typeof error === 'object' ? JSON.stringify(error) : error
-    }`,
-    message: {
-      err: `error occurreed in userController.${method}. Check server logs for more details.`,
-    },
-  };
+// Helper functions to verify JWT token and compare bcrypt passwords
+const verifyJWT = (token) => {
+  return Jwt.verify(token, process.env.JWT_SECRET_KEY);
 };
-
 const comparePassword = async (password, hashed) => {
   return await bcrypt.compare(password, hashed);
 };
 
 const userController = {};
 
+// Protects our API route
+userController.protect = (req, res, next) => {
+  try {
+    const isValidJWT = verifyJWT(req.cookies.JWT);
+    if (!isValidJWT) res.status(401).json({ message: 'User is not logged in' });
+
+    return next();
+  } catch (error) {
+    return next({
+      log: 'error running userController.protect middleware.',
+      status: 401,
+      message: { message: 'Not valid token' },
+    });
+  }
+};
+
+// Verifies if user password matches
 userController.verifyUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -36,13 +46,14 @@ userController.verifyUser = async (req, res, next) => {
     return next();
   } catch (error) {
     return next({
-      log: 'error running userController.verifyUser middleware. ',
+      log: 'error running userController.verifyUser middleware.',
       status: 400,
       message: { err: error },
     });
   }
 };
 
+// Creates user and also checks if the user exists in DB.
 userController.createUser = async (req, res, next) => {
   try {
     console.log('in createUser');
@@ -62,7 +73,7 @@ userController.createUser = async (req, res, next) => {
     }
 
     password = await bcrypt.hash(password, 5);
-
+    console.log(`Creating user for:${name}`);
     await db.query(
       `INSERT INTO users (email, name, password)
       VALUES ('${email}', '${name}', '${password}')`
