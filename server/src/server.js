@@ -6,6 +6,7 @@ const restaurantController = require('./controllers/restaurantController');
 const collectionsController = require('./controllers/collectionsController');
 const cookieController = require('./controllers/cookieController');
 const sessionController = require('./controllers/sessionController');
+const { body, validationResult } = require('express-validator');
 
 const app = express();
 const apiRouter = require('./routes/apiRouter');
@@ -18,32 +19,67 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', apiRouter);
 
-app.post('/signup', userController.createUser, cookieController.setJWTCookie, sessionController.startSession, (req, res) => {
-  // TODO: Finish this route and it's middleware
-  if (res.locals.status === 300) return res.sendStatus(300);
-  res.sendStatus(200);
-});
+app.post(
+  '/signup',
+  body('email').isEmail().normalizeEmail(),
+  body('name').not().isEmpty(),
+  body('password').not().isEmpty(),
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array()[0] });
+  },
+  userController.createUser,
+  cookieController.setJWTCookie,
+  sessionController.startSession,
+  (req, res) => {
+    // TODO: Finish this route and it's middleware
+    if (res.locals.status === 300) return res.sendStatus(300);
+    res.sendStatus(200);
+  }
+);
 
-app.post('/login', userController.verifyUser, cookieController.setJWTCookie, sessionController.startSession, (req, res) => {
-  // TODO: Finish this route and it's middleware
-  if (res.locals.status === 300) return res.sendStatus(300);
-  res.sendStatus(200);
-});
+app.post(
+  '/login',
+  userController.verifyUser,
+  cookieController.setJWTCookie,
+  sessionController.startSession,
+  (req, res) => {
+    // TODO: Finish this route and it's middleware
+    if (res.locals.status === 300) return res.sendStatus(300);
+    res.sendStatus(200);
+  }
+);
 
-app.post('/addToWishlist', restaurantController.addRestaurant, collectionsController.addToWishlist, (req, res) => {
-  res.status(200);
-  res.send(res.locals);
-});
+app.post(
+  '/addToWishlist',
+  restaurantController.addRestaurant,
+  collectionsController.addToWishlist,
+  (req, res) => {
+    res.status(200);
+    res.send(res.locals);
+  }
+);
 
-app.post('/addToFavorites', restaurantController.addRestaurant, collectionsController.addToFavorites, (req, res) => {
-  res.status(200);
-  res.send(res.locals);
-});
+app.post(
+  '/addToFavorites',
+  restaurantController.addRestaurant,
+  collectionsController.addToFavorites,
+  (req, res) => {
+    res.status(200);
+    res.send(res.locals);
+  }
+);
 
-app.post('/addToReviews', restaurantController.addRestaurant, collectionsController.addToReviews, (req, res) => {
-  res.status(200);
-  res.send(res.locals);
-});
+app.post(
+  '/addToReviews',
+  restaurantController.addRestaurant,
+  collectionsController.addToReviews,
+  (req, res) => {
+    res.status(200);
+    res.send(res.locals);
+  }
+);
 
 // app.get('/reviews', collectionsController.getReviews, (req, res) => {
 //   res.status(200).send()
@@ -57,7 +93,7 @@ app.use((error, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
     status: 500,
-    message: { err: 'An error occured' }
+    message: { err: 'An error occured' },
   };
   const errorObj = Object.assign({}, defaultErr, error);
   console.log(errorObj.log);
