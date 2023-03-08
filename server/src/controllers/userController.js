@@ -17,23 +17,22 @@ const createError = (errorInfo) => {
 const comparePassword = async (password, hashed) => {
   return await bcrypt.compare(password, hashed);
 };
+
 const userController = {};
 
 userController.verifyUser = async (req, res, next) => {
   try {
-    //test: console-log params to make sure params are being sent over
     const { email, password } = req.body;
-    //test: ensure req.params are appropriately saved as consts
-    // console.log('email: ', email,  'password : ', password)
-
-    const queryResult = await db.query(
+    let hashedPassword = await db.query(
       `SELECT email, password FROM users WHERE email = '${email}'`
     );
-    console.log('rows0:', queryResult.rows[0]);
-    console.log('rows1:', queryResult.rows[1]);
+    hashedPassword = hashedPassword.rows[0].password;
 
-    // res.locals.userDetails = queryResult.rows;
-    if (queryResult.rows[0] === undefined) res.locals.status = 300;
+    const isValidPW = await comparePassword(password, hashedPassword);
+
+    if (!isValidPW) {
+      return res.status(401).json({ message: 'Wrong password' });
+    }
     return next();
   } catch (error) {
     return next({
@@ -53,7 +52,7 @@ userController.createUser = async (req, res, next) => {
     const checkEmail = await db.query(
       `SELECT email FROM users WHERE email = '${email}'`
     );
-    console.log(`Checking if email:${email} exists in DB.`, checkEmail);
+    console.log(`Checking if email:${email} exists in DB.`);
     if (checkEmail.rowCount !== 0) {
       return next({
         log: 'email already exists',
@@ -64,13 +63,10 @@ userController.createUser = async (req, res, next) => {
 
     password = await bcrypt.hash(password, 5);
 
-    const created = await db.query(
+    await db.query(
       `INSERT INTO users (email, name, password)
       VALUES ('${email}', '${name}', '${password}')`
     );
-
-    console.log(created);
-
     //getting that instance from the database and saving it to res.locals
     const queryResult = await db.query(
       `SELECT * FROM users WHERE email = '${email}' AND password = '${password}'`
