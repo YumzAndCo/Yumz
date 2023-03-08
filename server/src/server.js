@@ -1,12 +1,12 @@
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
+const { body, validationResult } = require('express-validator');
 const userController = require('./controllers/userController');
 const restaurantController = require('./controllers/restaurantController');
 const collectionsController = require('./controllers/collectionsController');
 const cookieController = require('./controllers/cookieController');
 const sessionController = require('./controllers/sessionController');
-const { body, validationResult } = require('express-validator');
 
 const app = express();
 const apiRouter = require('./routes/apiRouter');
@@ -17,7 +17,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api', apiRouter);
+app.use('/api', userController.protect, apiRouter);
 
 app.post(
   '/signup',
@@ -32,12 +32,7 @@ app.post(
   },
   userController.createUser,
   cookieController.setJWTCookie,
-  sessionController.startSession,
-  (req, res) => {
-    // TODO: Finish this route and it's middleware
-    if (res.locals.status === 300) return res.sendStatus(300);
-    res.sendStatus(200);
-  }
+  sessionController.startSession
 );
 
 app.post(
@@ -46,7 +41,8 @@ app.post(
   body('password').not().isEmpty(),
   (req, res, next) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(400).json(errors.array()[0]);
+    if (!errors.isEmpty())
+      return res.status(400).json({ error: errors.array() });
     else return next();
   },
   userController.verifyUser,
