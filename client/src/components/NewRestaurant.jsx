@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import RestaurantInfo from './RestaurantInfo.jsx';
 import RestaurantSearchResult from './RestaurantSearchResult.jsx';
 import RatingsTable from './RatingsTable.jsx';
@@ -9,8 +9,30 @@ import helperFns from '../helperFns.js';
 import { useNavigate } from 'react-router-dom';
 
 const NewRestaurant = props => {
+
   const [restaurantInfo, setRestaurantInfo] = useState(null);
   const [searchResults, setSearchResults] = useState({});
+
+
+// Create two ref objects using the useRef hook, which will be used to reference the Autocomplete instance and the input element
+const autoCompleteRef = useRef();
+const inputRef = useRef();
+
+// Define the options for the Autocomplete instance, including the country restriction, fields to return, and types of results to search for
+const options = {
+  componentRestrictions: { country: "us" },
+  fields: ["address_components", "geometry", "icon", "name"],
+  types: ["establishment"]
+};
+
+// Use the useEffect hook to initialize the Autocomplete instance when the component mounts
+useEffect(() => {
+  // Set the value of the autoCompleteRef to a new instance of the Autocomplete class, passing in the input element and the options object as parameters
+  autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+    inputRef.current,
+    options
+  );
+}, []);
 
   const navigate = useNavigate();
 
@@ -153,7 +175,8 @@ const NewRestaurant = props => {
             id='restaurant-name-input'
             name='restaurant-name-input'
             className='new-restaurant-input'
-            type='text' /><br />
+            type='text' 
+            ref={inputRef}/><br />
           <label className='new-restaurant-prompt'
             htmlFor='restaurant-location-input'>
             Add a location to search in?
