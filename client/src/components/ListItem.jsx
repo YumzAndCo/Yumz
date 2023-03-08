@@ -13,7 +13,7 @@ const ListItem = (props) => {
       <span className="item" id="stars">{props.listing.rating} ☆</span>
       <span className="item" id="cuisine">{props.listing.cuisine}</span>
       <span className="item" id="hours">{props.listing.hours}</span>
-      <button type="button" className="previewButton" onClick={() => setModalStatus(true)}>{props.listing.preview}</button>
+      <button type="button" className="previewButton" onClick={() => setModalStatus(true)}>See Details</button>
       <DetailsModal show={modalStatus} close={() => setModalStatus(false)} />
     </div>
   );

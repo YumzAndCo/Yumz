@@ -21,8 +21,8 @@ const CollectionList = (props) => {
       preview: 'See details',
       id: 2
     }];
-  } else if (props.listName === 'New Search') {
-    restaurants = props.searchResults;
+  } else if (props.listName === 'Search Results') {
+    restaurants = Object.values(props.searchResults);
   }
 
   else {
