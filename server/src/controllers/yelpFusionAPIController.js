@@ -20,7 +20,7 @@ const yelpFusionAPIController = {};
 yelpFusionAPIController.getRestaurantDetails = async (req, res, next) => {
   try {
     console.log('In yelpFusionAPIController.getRestaurantDetails');
-    const { name, latitude, longitude } = req.body;
+    const { name, latitude, longitude } = req.body; //or req.params
 
     const restaurantDetailsResponse = await fetch(
       'https://api.yelp.com/v3/businesses/search?' +

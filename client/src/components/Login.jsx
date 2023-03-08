@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styles from '../stylesheets/login.css';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import '../stylesheets/App.css';
 
 async function loginUser(credentials) {
   return fetch('/login', {
@@ -24,7 +24,7 @@ async function loginUser(credentials) {
 // This entire portion is used for react-router setup
 export const Login = () => {
   const navigate = useNavigate();
-  
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -38,8 +38,8 @@ export const Login = () => {
       resetForm();
     }
     navigate('/');
-    
-    
+
+
 
   };
 
@@ -61,9 +61,9 @@ export const Login = () => {
           <input type="password" onChange={e => setPassword(e.target.value)} />
         </label>
         <div>
-        <label>
-          <button className="signupButton" type="button" onClick={e => navigate('/signup')}>No account yet?</button>
-        </label>
+          <label>
+            <button className="signupButton" type="button" onClick={e => navigate('/signup')}>No account yet?</button>
+          </label>
         </div>
         <div>
           <button className="submit" type="submit">Submit</button>
