@@ -26,7 +26,8 @@ cookieController.setJWTCookie = async (req, res, next) => {
     return next();
   } catch (error) {
     return next({
-      log: 'cookieController.setJWTCookie',
+      log: 'error running cookieController.setJWTCookie middleware.',
+      status: 400,
       message: { err: error },
     });
   }
