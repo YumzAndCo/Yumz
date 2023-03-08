@@ -191,13 +191,6 @@ const NewRestaurant = (props) => {
             <option value='Current Location' />
           </datalist>
           <br />
-          <button
-            id='return-home-btn'
-            type='button'
-            className='new-restaurant-button'
-            onClick={onReturnHomeBtnClick}>
-            Return Home
-          </button>
           <input
             type='submit'
             value='Next'
