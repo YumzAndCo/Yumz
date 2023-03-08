@@ -14,7 +14,7 @@ const comparePassword = async (password, hashed) => {
 const userController = {};
 
 // Protects our API route
-userController.protect = () => {
+userController.protect = (req, res, next) => {
   try {
     const isValidJWT = verifyJWT(req.cookies.JWT);
     if (!isValidJWT) res.status(401).json({ message: 'User is not logged in' });
@@ -23,8 +23,8 @@ userController.protect = () => {
   } catch (error) {
     return next({
       log: 'error running userController.protect middleware.',
-      status: 400,
-      message: { err: error },
+      status: 401,
+      message: { message: 'Not valid token' },
     });
   }
 };

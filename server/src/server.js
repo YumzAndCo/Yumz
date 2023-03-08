@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const { body, validationResult } = require('express-validator');
+const cookieParser = require('cookie-parser');
 const userController = require('./controllers/userController');
 const restaurantController = require('./controllers/restaurantController');
 const collectionsController = require('./controllers/collectionsController');
@@ -15,6 +16,7 @@ const PORT = 3000;
 // General middleware
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', userController.protect, apiRouter);

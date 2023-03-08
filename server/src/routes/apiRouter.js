@@ -8,7 +8,9 @@ const yelpFusionAPIController = require('../controllers/yelpFusionAPIController'
 const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 
 const router = express.Router();
-
+router.get('/', (req, res) => {
+  return res.json({ message: 'Hello from API Router' });
+});
 router.get('/search', googlePlacesAPIController.search, (req, res) => {
   return res.status(200).json(res.locals.restaurantSearchResults);
 });
