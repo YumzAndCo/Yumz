@@ -6,6 +6,7 @@ const restaurantController = require('./controllers/restaurantController');
 const collectionsController = require('./controllers/collectionsController');
 const cookieController = require('./controllers/cookieController');
 const sessionController = require('./controllers/sessionController');
+const { body, validationResult } = require('express-validator');
 
 const app = express();
 const apiRouter = require('./routes/apiRouter');
@@ -20,6 +21,15 @@ app.use('/api', apiRouter);
 
 app.post(
   '/signup',
+  body('email').isEmail().normalizeEmail(),
+  body('name').not().isEmpty(),
+  body('password').not().isEmpty(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array()[0] });
+    else return next();
+  },
   userController.createUser,
   cookieController.setJWTCookie,
   sessionController.startSession,
@@ -32,14 +42,16 @@ app.post(
 
 app.post(
   '/login',
+  body('email').isEmail().normalizeEmail(),
+  body('password').not().isEmpty(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json(errors.array()[0]);
+    else return next();
+  },
   userController.verifyUser,
   cookieController.setJWTCookie,
-  sessionController.startSession,
-  (req, res) => {
-    // TODO: Finish this route and it's middleware
-    if (res.locals.status === 300) return res.sendStatus(300);
-    res.sendStatus(200);
-  }
+  sessionController.startSession
 );
 
 app.post(

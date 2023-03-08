@@ -11,11 +11,9 @@ restaurantController.addRestaurant = async (req, res, next) => {
     }
     const { name, cuisine, price_rating, hours, address, delivery, menu_url } =
       req.body.restaurant;
-    console.log(req.body.restaurant);
     await db.query(
       `INSERT INTO restaurants (name, cuisine, price_rating, hours, address, delivery, menu_url)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-      [name, cuisine, price_rating, hours, address, delivery, menu_url]
+      VALUES ('${name}', '${cuisine}', '${price_rating}', '${hours}', '${address}', '${delivery}', '${menu_url}')`
     );
     const newRestaurant = await db.query(
       `SELECT * FROM restaurants WHERE name = '${name}' AND address = '${address}'`
