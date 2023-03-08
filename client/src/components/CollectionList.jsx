@@ -10,7 +10,7 @@ const CollectionList = (props) => {
       rating: 8,
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
-      preview: 'Lorem ipsum...',
+      preview: 'See details',
       id: 1
     },
     {
@@ -18,16 +18,20 @@ const CollectionList = (props) => {
       rating: 8,
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
-      preview: 'Lorem ipsum...',
+      preview: 'See details',
       id: 2
     }];
-  } else {
+  } else if (props.listName === 'New Search') {
+    restaurants = props.searchResults;
+  }
+
+  else {
     restaurants = [{
       name: 'Ramen House',
       rating: 8,
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
-      preview: 'Lorem ipsum...',
+      preview: 'See details',
       id: 1
     }]
   }

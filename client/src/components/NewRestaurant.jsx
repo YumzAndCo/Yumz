@@ -110,10 +110,6 @@ const NewRestaurant = props => {
     setSearchResults({});
   };
 
-  const onReturnHomeBtnClick = () => {
-    navigate('/');
-  };
-
   const searchResultItems = [];
   for (const [googlePlaceId, googlePlaceInfo] of Object.entries(searchResults)) {
     searchResultItems.push(
@@ -129,7 +125,9 @@ const NewRestaurant = props => {
 
   if (searchResultItems.length > 0) {
     // VIEW SEARCH RESULTS
+    console.log(searchResults)
     return (
+      // <CollectionList />
       <div id='new-restaurant-info'>
         <div id='new-restaurant-header'>Search Results</div>
         <button
