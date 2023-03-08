@@ -6,7 +6,7 @@ const restaurantController = {};
 restaurantController.addRestaurant = async (req, res, next) => {
   try {
     if (req.body.restaurant.restaurant_id !== null) {
-      res.locals.restID = req.body.restaurant_id;
+      res.locals.restID = req.body.restaurant.restaurant_id;
       return next();
     }
     const { name, cuisine, price_rating, hours, address, delivery, menu_url } =
@@ -14,7 +14,8 @@ restaurantController.addRestaurant = async (req, res, next) => {
     console.log(req.body.restaurant);
     await db.query(
       `INSERT INTO restaurants (name, cuisine, price_rating, hours, address, delivery, menu_url)
-      VALUES ('${name}', '${cuisine}', '${price_rating}', '${hours}', '${address}', '${delivery}', '${menu_url}')`
+      VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [name, cuisine, price_rating, hours, address, delivery, menu_url]
     );
     const newRestaurant = await db.query(
       `SELECT * FROM restaurants WHERE name = '${name}' AND address = '${address}'`

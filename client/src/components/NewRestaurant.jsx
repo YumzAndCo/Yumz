@@ -121,7 +121,7 @@ const NewRestaurant = (props) => {
       const response = await fetch('/addToReviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ restaurant: { restaurant_id: restID } }),
+        body: JSON.stringify({ restaurant_id: restID }),
       });
       const data = await response.json();
       console.log(data);
