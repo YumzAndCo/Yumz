@@ -31,14 +31,5 @@ export const Reviews = () => {
   //   fetchReviews();
   // });
 
-  // useEffect(() => {
-  //   const fetchReviews = async () => {
-  //     const response = await fetch('/reviews');
-  //     const data = response.json();
-  //     setReviews(data);
-  //   };
-  //   fetchReviews();
-  // }, []);
-
   return <CollectionList restaurants={listItems} listName='Reviews' />;
 };

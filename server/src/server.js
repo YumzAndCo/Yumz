@@ -86,7 +86,7 @@ app.post(
 );
 
 // Was sending without any data;
-app.get('/reviews', collectionsController.getReviews, (req, res) => {
+app.get('/reviews', collectionsController.getRatings, (req, res) => {
   res.status(200).send(res.locals.userReviews);
 });
 

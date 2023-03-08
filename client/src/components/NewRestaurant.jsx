@@ -115,21 +115,7 @@ const NewRestaurant = (props) => {
   };
 
   const onFinishBtnClick = async () => {
-    console.log('Finish button clicked');
-    // TO DO - post request to /restaurant
-    try {
-      const response = await fetch('/addToReviews', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ restaurant_id: restID }),
-      });
-      const data = await response.json();
-      console.log(data);
-      // Do something with the response data/update state or redirect to a new page
-      navigate('/reviews');
-    } catch (error) {
-      console.error(error);
-    }
+    navigate('/reviews');
   };
 
   const onReturnSearchBtnClick = () => {

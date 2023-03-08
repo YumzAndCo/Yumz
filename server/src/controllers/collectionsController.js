@@ -11,21 +11,24 @@ const db = require('../models/userModels.js');
 
 const collectionsController = {};
 
-collectionsController.getReviews = async (req, res, next) => {
+collectionsController.getRatings = async (req, res, next) => {
   try {
     const { userID, restaurantID } = req.body;
-    const userReviews = await db.query(
-      `SELECT r.*, u.name, u.email FROM rating r
-       JOIN users u ON r.user_id = u.user_id
-       WHERE r.user_id = '${userID}' AND r.restaurant_id = '${restaurantID}'`
+    const userRatings = await db.query(
+      `SELECT r.* FROM rating r
+      JOIN users u ON r.user_id = u.user_id
+      JOIN restaurants rest ON r.restaurant_id = rest.id
+      WHERE r.user_id = '${userID}'
+      AND r.restaurant_id = '${restaurantID}'
+      AND rest.is_reviewed = true`
     );
-    res.locals.userReviews = userReviews.rows;
+    res.locals.userRatings = userRatings.rows;
     return next();
   } catch (error) {
     return next({
-      log: 'collectionsController.getReviews() ERROR',
+      log: 'collectionsController.getRatings() ERROR',
       status: 400,
-      message: { err: `in collectionsController.getReviews: ${error}` },
+      message: { err: `in collectionsController.getRatings: ${error}` },
     });
   }
 };
@@ -83,10 +86,21 @@ collectionsController.addToWishlist = async (req, res, next) => {
 // Complete addToReviews
 collectionsController.addToReviews = async (req, res, next) => {
   try {
-    const { userID, restaurantID, review } = req.body;
+    const {
+      userID,
+      restaurantID,
+      dateUpdated,
+      overallScore,
+      serviceScore,
+      foodScore,
+      atmosphereScore,
+      priceScore,
+      notes,
+    } = req.body;
+
     await db.query(
-      `INSERT INTO reviews (user_id, restaurant_id, review)
-      VALUES ('${userID}', '${restaurantID}', '${review}')`
+      `INSERT INTO rating (user_id, restaurant_id, date_updated, overall_score, service_score, food_score, atmosphere_score, price_score, notes)
+      VALUES ('${userID}', '${restaurantID}', '${dateUpdated}', '${overallScore}', '${serviceScore}', '${foodScore}', '${atmosphereScore}', '${priceScore}', '${notes}')`
     );
     return next();
   } catch (error) {
