@@ -11,6 +11,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
   return res.json({ message: 'Hello from API Router' });
 });
+
 router.get('/search', googlePlacesAPIController.search, (req, res) => {
   return res.status(200).json(res.locals.restaurantSearchResults);
 });
@@ -32,7 +33,11 @@ router.get(
   }
 );
 
-// router.get('/yelp', yelpFusionAPIController, (req, res) => {
-//   res.json({ message: 'From apiRouter for yelp API' });
-// });
+router.get(
+  '/yelp',
+  yelpFusionAPIController.getRestaurantDetails,
+  (req, res) => {
+    res.json(res.locals.restaurantDetailsResults);
+  }
+);
 module.exports = router;

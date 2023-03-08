@@ -39,6 +39,7 @@ yelpFusionAPIController.getRestaurantDetails = async (req, res, next) => {
     const restaurantDetailsResult = await restaurantDetailsResponse.json();
     console.log(restaurantDetailsResult);
     res.locals.restaurantDetailsResults = restaurantDetailsResult;
+
     return next();
   } catch (error) {
     return next(
