@@ -36,42 +36,33 @@ userController.verifyUser = async (req, res, next) => {
     if (queryResult.rows[0] === undefined) res.locals.status = 300;
     return next();
   } catch (error) {
-    next({
-      log: 'error running getUser middleware. ',
-      message: 'an error occurred trying to find user',
+    return next({
+      log: 'error running userController.verifyUser middleware. ',
+      status: 400,
+      message: { err: error },
     });
   }
 };
 
 userController.createUser = async (req, res, next) => {
   try {
+    console.log('in createUser');
     const { name, email } = req.body;
     let { password } = req.body;
-    console.log(req.body);
-    // TODO: change from truthy to different logic later
 
     const checkEmail = await db.query(
       `SELECT email FROM users WHERE email = '${email}'`
     );
-    console.log('!!!!!!!! checkEmail : ', checkEmail);
+    console.log(`Checking if email:${email} exists in DB.`, checkEmail);
     if (checkEmail.rowCount !== 0) {
       return next({
         log: 'email already exists',
+        status: 400,
         message: { err: 'email already exists' },
       });
     }
 
-    // CHECKS TO SEE IF NAME IS UNIQUE
-    // const checkName = await db.query(`SELECT * FROM users WHERE name = '${name}'`);
-    // if (checkName.rowCount !== 0){
-    //   return next({
-    //     log: 'name already exists',
-    //     message: {err: 'email already exists'}
-    //   });
-    // }
-
-    //creating the user instance in the database
-    password = bcrypt.hash(password, 5);
+    password = await bcrypt.hash(password, 5);
 
     const created = await db.query(
       `INSERT INTO users (email, name, password)
@@ -88,44 +79,11 @@ userController.createUser = async (req, res, next) => {
 
     const userID = res.locals.user.user_id;
 
-    //creating three new instances of Collections based on that user's userID
-    // await db.query(
-    //   `INSERT INTO collection (user_id, name)
-    //   VALUES ('${userID}', 'favorites')`
-    // );
-
-    // await db.query(
-    //   `INSERT INTO collection (user_id, name)
-    //   VALUES ('${userID}', 'wishlist')`
-    // );
-
-    // await db.query(
-    //   `INSERT INTO collection (user_id, name)
-    //   VALUES ('${userID}', 'reviews')`
-    // );
-
-    // const userFavorites = await db.query(
-    //   `SELECT * FROM users WHERE user_id = '${userID}' AND name = 'favorites'`
-    // );
-    // const userWishlist = await db.query(
-    //   `SELECT * FROM users WHERE user_id = '${userID}' AND name = 'wishlist'`
-    // );
-    // const userReviews = await db.query(
-    //   `SELECT * FROM users WHERE user_id = '${userID}' AND name = 'reviews'`
-    // );
-
-    // const collections = {
-    //   userFavorites: userFavorites,
-    //   userWishList: userWishlist,
-    //   userReviews: userReviews,
-    // };
-
-    // res.locals.collections = collections;
-
     return next();
   } catch (error) {
     return next({
-      log: 'userController.createUser() ERROR',
+      log: 'error running userController.createUser middleware',
+      status: 400,
       message: { err: error },
     });
   }

@@ -24,14 +24,15 @@ app.post(
   body('email').isEmail().normalizeEmail(),
   body('name').not().isEmpty(),
   body('password').not().isEmpty(),
-  (req, res) => {
+  (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())
       return res.status(400).json({ errors: errors.array()[0] });
+    else return next();
   },
   userController.createUser,
-  cookieController.setJWTCookie,
-  sessionController.startSession,
+  // cookieController.setJWTCookie,
+  // sessionController.startSession,
   (req, res) => {
     // TODO: Finish this route and it's middleware
     if (res.locals.status === 300) return res.sendStatus(300);
