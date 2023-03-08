@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { CollectionList } from './CollectionList.jsx';
+import CollectionList from './CollectionList.jsx';
 
 export const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -40,20 +40,5 @@ export const Reviews = () => {
   //   fetchReviews();
   // }, []);
 
-  return (
-    // <div>
-    //   {reviews.map((review) => (
-    //     <div key={review._id}>
-    //       <p>Overall Score: {review.overall_score}</p>
-    //       <p>Service Score: {review.service_score}</p>
-    //       <p>Food Score: {review.food_score}</p>
-    //       <p>Atmosphere Score: {review.atmosphere_score}</p>
-    //       <p>Price Score: {review.price_score}</p>
-    //       <p>Notes: {review.notes}</p>
-    //     </div>
-    //   ))}
-
-    <CollectionList restaurants={listItems} listName='Reviews' />
-    // </div>
-  );
+  return <CollectionList restaurants={listItems} listName='Reviews' />;
 };
