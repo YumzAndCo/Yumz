@@ -13,8 +13,6 @@ import NewRestaurant from './NewRestaurant.jsx';
 import { useNavigate } from 'react-router-dom';
 import helperFns from '../helperFns.js';
 
-
-
 function App() {
   useEffect(() => {
     console.log(helperFns);
@@ -22,11 +20,8 @@ function App() {
   }, []);
 
   return (
-
     <div className="router">
-
       <Routes>
-
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/collection' element={<CollectionList />} />
@@ -38,7 +33,6 @@ function App() {
         <Route path='/new-restaurant' element={<NewRestaurant />} />
       </Routes>
     </div>
-
   );
 }
 

@@ -1,12 +1,11 @@
 import React from 'react';
-import Detail from './Detail.jsx';
-import DetailsTable from './DetailsTable.jsx';
-import styles from '../stylesheets/details-modal.css';
+// import styles from '../stylesheets/details-modal.css';
 import { faLocationDot, faCircleInfo, faPhone, faTruckFast, faShirt, faCar } from '@fortawesome/free-solid-svg-icons';
 import { faClock, faCreditCard, faFileLines } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styles from '../stylesheets/detail.css';
 
 const RestaurantInfo = props => {
-  // console.log('RESTAURANT INFO:', props);
   const mainDetails = [];
   const details = {};
   mainDetails.push(
@@ -98,6 +97,64 @@ const RestaurantInfo = props => {
       <DetailsTable details={details} />
     </>
 
+  );
+};
+
+const Detail = props => {
+
+  if (Object.hasOwn(props, 'url')) {
+    return (
+      <div className="restaurant-detail">
+        <a href={props.url} target="_blank" rel="noreferrer">
+          <FontAwesomeIcon
+            icon={props.iconName}
+            className="details-modal-icon" />
+          {props.text}
+        </a>
+      </div>
+    );
+  } else {
+    return (
+      <div className="restaurant-detail">
+        <FontAwesomeIcon
+          icon={props.iconName}
+          className="details-modal-icon" />
+        {props.text}
+      </div>
+    );
+  }
+};
+
+const DetailsTable = props => {
+  return (
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            {props.details['reservations']}
+          </td>
+          <td>
+            {props.details['menu']}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {props.details['credit-cards']}
+          </td>
+          <td>
+            {props.details['dress-code']}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {props.details['delivery']}
+          </td>
+          <td>
+            {props.details['parking']}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 };
 
