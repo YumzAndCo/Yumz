@@ -1,15 +1,13 @@
-.login, .signup {
+.login,
+.signup {
   font-family: 'Fredoka One', cursive;
   color: #474747;
-  position: absolute;
   text-align: center;
   padding: 50px;
   border: 5px solid #FD7F32;
-  background-color:#EAD9EB;
+  background-color: #EAD9EB;
   border-radius: 10px;
-  left: 50%;
-  top: 40%;
-  transform: translate(-50%, -50%);
+  max-width: 220px;
 }
 
 .submit {

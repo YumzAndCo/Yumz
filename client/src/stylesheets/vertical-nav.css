@@ -1,6 +1,6 @@
 #vertical-nav {
   grid-row-start: 1;
-  grid-row-end: span 2;
+  grid-row-end: span 3;
   width: 5rem;
   padding-top: 2rem;
   padding-left: 2rem;
