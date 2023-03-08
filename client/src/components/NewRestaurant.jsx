@@ -8,7 +8,7 @@ import RatingNotes from './RatingNotes.jsx';
 import helperFns from '../helperFns.js';
 import { useNavigate } from 'react-router-dom';
 
-const NewRestaurant = props => {
+const NewRestaurant = (props) => {
   const [restaurantInfo, setRestaurantInfo] = useState(null);
   const [searchResults, setSearchResults] = useState({});
 
@@ -26,7 +26,9 @@ const NewRestaurant = props => {
         return;
       }
 
-      const locationInput = document.querySelector('#restaurant-location-input');
+      const locationInput = document.querySelector(
+        '#restaurant-location-input'
+      );
       const locationVal = locationInput.value;
 
       let requestUrl = `/api/search?query=${restaurantName}`;
@@ -37,8 +39,12 @@ const NewRestaurant = props => {
       // - For an empty string, Google Places API will default to user's location (based on IP address of req?)
       if (locationVal === 'Current Location') {
         const userCoords = helperFns.retrieveUserCoords();
-        const latitude = Object.hasOwn(userCoords, 'latitude') ? userCoords.latitude : null;
-        const longitude = Object.hasOwn(userCoords, 'longitude') ? userCoords.longitude : null;
+        const latitude = Object.hasOwn(userCoords, 'latitude')
+          ? userCoords.latitude
+          : null;
+        const longitude = Object.hasOwn(userCoords, 'longitude')
+          ? userCoords.longitude
+          : null;
 
         if (latitude && longitude) {
           requestUrl += `&latitude=${latitude}&longitude=${longitude}`;
@@ -47,18 +53,24 @@ const NewRestaurant = props => {
         requestUrl += ` near ${locationVal}`;
       }
       // TODO - not handling scenario where no search results come back..
-      console.log('submitRestaurantName, searching for restaurant name:', restaurantName,
-        'location val: ', locationVal);
+      console.log(
+        'submitRestaurantName, searching for restaurant name:',
+        restaurantName,
+        'location val: ',
+        locationVal
+      );
 
       console.log('NewRestaurant sending request to ', requestUrl);
       const response = await fetch(requestUrl);
       const jsonSearchResults = await response.json();
 
       const newSearchResults = {};
-      for (const [googlePlaceId, googlePlaceInfo] of Object.entries(jsonSearchResults.results)) {
+      for (const [googlePlaceId, googlePlaceInfo] of Object.entries(
+        jsonSearchResults.results
+      )) {
         newSearchResults[googlePlaceId] = {
-          'name': googlePlaceInfo.name,
-          'address': googlePlaceInfo.address
+          name: googlePlaceInfo.name,
+          address: googlePlaceInfo.address,
         };
       }
 
@@ -84,7 +96,8 @@ const NewRestaurant = props => {
       newRestaurantInfo['googlePlaceId'] = restaurantDetails.id;
       newRestaurantInfo['name'] = restaurantDetails.name;
       newRestaurantInfo['address'] = restaurantDetails.address;
-      newRestaurantInfo['category'] = 'American (Traditional), Pizza, Pasta Shops';
+      newRestaurantInfo['category'] =
+        'American (Traditional), Pizza, Pasta Shops';
       newRestaurantInfo['parking'] = 'Private lot parking';
       newRestaurantInfo['hours'] = restaurantDetails.hours;
       newRestaurantInfo['menu'] = 'https://www.google.com';
@@ -101,9 +114,22 @@ const NewRestaurant = props => {
     }
   };
 
-  const onFinishBtnClick = () => {
+  const onFinishBtnClick = async () => {
     console.log('Finish button clicked');
     // TO DO - post request to /restaurant
+    try {
+      const response = await fetch('/addToReviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ restaurant: { restaurant_id: restID } }),
+      });
+      const data = await response.json();
+      console.log(data);
+      // Do something with the response data/update state or redirect to a new page
+      navigate('/reviews');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onReturnSearchBtnClick = () => {
@@ -115,7 +141,9 @@ const NewRestaurant = props => {
   };
 
   const searchResultItems = [];
-  for (const [googlePlaceId, googlePlaceInfo] of Object.entries(searchResults)) {
+  for (const [googlePlaceId, googlePlaceInfo] of Object.entries(
+    searchResults
+  )) {
     searchResultItems.push(
       <RestaurantSearchResult
         name={googlePlaceInfo.name}
@@ -147,7 +175,9 @@ const NewRestaurant = props => {
     return (
       <div id='new-restaurant-info'>
         <div id='new-restaurant-header'>Add a Restaurant</div>
-        <div className='new-restaurant-prompt'>What is the name of the restaurant?</div>
+        <div className='new-restaurant-prompt'>
+          What is the name of the restaurant?
+        </div>
         <form
           onSubmit={(event) => submitRestaurantName(event)}
           autoComplete='off'>
@@ -155,26 +185,35 @@ const NewRestaurant = props => {
             id='restaurant-name-input'
             name='restaurant-name-input'
             className='new-restaurant-input'
-            type='text' /><br />
-          <label className='new-restaurant-prompt'
+            type='text'
+          />
+          <br />
+          <label
+            className='new-restaurant-prompt'
             htmlFor='restaurant-location-input'>
             Add a location to search in?
-          </label><br />
+          </label>
+          <br />
           <input
             id='restaurant-location-input'
             name='restaurant-location-input'
             className='new-restaurant-input'
             type='text'
-            list='location-options' />
+            list='location-options'
+          />
           <datalist id='location-options'>
             <option value='Current Location' />
           </datalist>
           <br />
-          <button id='return-home-btn'
+          <button
+            id='return-home-btn'
             type='button'
             className='new-restaurant-button'
-            onClick={onReturnHomeBtnClick}>Return Home</button>
-          <input type='submit'
+            onClick={onReturnHomeBtnClick}>
+            Return Home
+          </button>
+          <input
+            type='submit'
             value='Next'
             className='new-restaurant-button'></input>
         </form>
@@ -184,18 +223,16 @@ const NewRestaurant = props => {
     // VIEW RESTAURANT DETAILS
     return (
       <div id='new-restaurant-info'>
-        <div id="restaurant-name">{restaurantInfo.name}</div>
+        <div id='restaurant-name'>{restaurantInfo.name}</div>
         <RestaurantInfo info={restaurantInfo} />
-        <div className="section-header">
+        <div className='section-header'>
           <span>Ratings</span>
         </div>
         <RatingsTable />
-        <div className="section-header">
+        <div className='section-header'>
           <span>Notes</span>
         </div>
-        <RatingNotes
-          buttonText='Finish'
-          clickHandler={onFinishBtnClick} />
+        <RatingNotes buttonText='Finish' clickHandler={onFinishBtnClick} />
       </div>
     );
   }
