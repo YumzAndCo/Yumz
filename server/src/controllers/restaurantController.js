@@ -4,12 +4,12 @@ const db = require('../models/userModels.js');
 const restaurantController = {};
 
 restaurantController.addRestaurant = async (req, res, next) => {
-  try{
-    if(req.body.restaurant.restaurant_id !== null) {
+  try {
+    if (req.body.restaurant.restaurant_id !== null) {
       res.locals.restID = req.body.restaurant_id;
       return next();
     }
-    const {name, cuisine, price_rating, hours, address, delivery, menu_url} = req.body.restaurant;
+    const { name, cuisine, price_rating, hours, address, delivery, menu_url } = req.body.restaurant;
     await db.query(
       `INSERT INTO restaurants (name, cuisine, price_rating, hours, address, delivery, menu_url) 
       VALUES ('${name}', '${cuisine}', '${price_rating}', '${hours}', '${address}', '${delivery}', '${menu_url}')`
@@ -19,7 +19,7 @@ restaurantController.addRestaurant = async (req, res, next) => {
     return next();
 
   }
-  catch(err){
+  catch (err) {
     return next({
       log: 'an error occurred',
       message: 'an error occurred'
@@ -27,3 +27,4 @@ restaurantController.addRestaurant = async (req, res, next) => {
   }
 };
 
+module.exports = restaurantController;

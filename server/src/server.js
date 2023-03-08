@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const morgan = require('morgan');
 const userController = require('./controllers/userController');
 const restaurantController = require('./controllers/restaurantController');
 const collectionsController = require('./controllers/collectionsController');
@@ -10,7 +11,10 @@ const app = express();
 const apiRouter = require('./routes/apiRouter');
 const PORT = 3000;
 
+// General middleware
+app.use(morgan('dev'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', apiRouter);
 
@@ -53,7 +57,7 @@ app.use((error, req, res, next) => {
   const defaultErr = {
     log: 'Express error handler caught unknown middleware error',
     status: 500,
-    message: {err: 'An error occured'}
+    message: { err: 'An error occured' }
   };
   const errorObj = Object.assign({}, defaultErr, error);
   console.log(errorObj.log);

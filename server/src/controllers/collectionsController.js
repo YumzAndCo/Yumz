@@ -13,9 +13,9 @@ const collectionsController = {};
 
 collectionsController.getReviews = async (req, res, next) => {
   try {
-    const {userID} = req.body;
+    const { userID } = req.body;
     const userReviews = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'reviews'`);
-  } catch(error) {
+  } catch (error) {
     return next({
       log: 'an error occurred',
       message: 'an error occurred'
@@ -25,9 +25,9 @@ collectionsController.getReviews = async (req, res, next) => {
 
 collectionsController.getFavorites = async (req, res, next) => {
   try {
-    const {userID} = req.body;
+    const { userID } = req.body;
     const userFavorites = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'favorites'`);
-  } catch(error) {
+  } catch (error) {
     return next({
       log: 'an error occurred',
       message: 'an error occurred'
@@ -37,10 +37,10 @@ collectionsController.getFavorites = async (req, res, next) => {
 
 collectionsController.getWishlist = async (req, res, next) => {
   try {
-    const {userID} = req.body;
+    const { userID } = req.body;
     const userWishlist = await db.query(`SELECT * FROM users WHERE user_id = '${userID}' AND name = 'wishlist'`);
 
-  } catch(error) {
+  } catch (error) {
     return next({
       log: 'an error occurred',
       message: 'an error occurred'
@@ -69,8 +69,10 @@ collectionsController.addToWishlist = async (req, res, next) => {
 };
 
 collectionsController.addToReviews = async (req, res, next) => {
-  
+
 };
+
+module.exports = collectionsController;
 
 /*
 
