@@ -52,19 +52,13 @@ app.post(
   sessionController.startSession
 );
 
-app.post(
-  '/addToWishlist',
-  restaurantController.addRestaurant,
-  collectionsController.addToWishlist,
-  (req, res) => {
-    res.status(200);
-    res.send(res.locals);
-  }
-);
+app.post('/addToWishlist', collectionsController.addToWishlist, (req, res) => {
+  res.status(200);
+  res.send(res.locals);
+});
 
 app.post(
   '/addToFavorites',
-  restaurantController.addRestaurant,
   collectionsController.addToFavorites,
   (req, res) => {
     res.status(200);
@@ -73,19 +67,18 @@ app.post(
 );
 
 // addToReviews was empty
-app.post(
-  '/addToReviews',
-  restaurantController.addRestaurant,
-  collectionsController.addToReviews,
-  (req, res) => {
-    res.status(200);
-    res.send(res.locals);
-  }
-);
+app.post('/addToReviews', collectionsController.addToReviews, (req, res) => {
+  res.status(200);
+  res.send(res.locals);
+});
+
+// removeFromFavorites
+
+// removeFromWishlist
 
 // Was sending without any data;
 app.get('/reviews', collectionsController.getRatings, (req, res) => {
-  res.status(200).send(res.locals.userReviews);
+  res.status(200).send(res.locals.userRatings);
 });
 
 app.get('/', (req, res) => {
