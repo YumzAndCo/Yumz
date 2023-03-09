@@ -7,6 +7,8 @@ import detailStyles from '../stylesheets/details-modal.css';
 import RatingNotes from './RatingNotes.jsx';
 import helperFns from '../helperFns.js';
 import { useNavigate } from 'react-router-dom';
+import CollectionList from './CollectionList.jsx';
+import DetailsModal from './DetailsModal.jsx';
 
 const NewRestaurant = (props) => {
   const [restaurantInfo, setRestaurantInfo] = useState(null);
@@ -89,6 +91,7 @@ const NewRestaurant = (props) => {
         jsonSearchResults.results
       )) {
         newSearchResults[googlePlaceId] = {
+          googlePlaceId: googlePlaceId,
           name: googlePlaceInfo.name,
           address: googlePlaceInfo.address,
         };
@@ -142,10 +145,6 @@ const NewRestaurant = (props) => {
     setSearchResults({});
   };
 
-  const onReturnHomeBtnClick = () => {
-    navigate('/');
-  };
-
   const searchResultItems = [];
   for (const [googlePlaceId, googlePlaceInfo] of Object.entries(
     searchResults
@@ -163,18 +162,23 @@ const NewRestaurant = (props) => {
 
   if (searchResultItems.length > 0) {
     // VIEW SEARCH RESULTS
+    // console.log(searchResults)
     return (
-      <div id='new-restaurant-info'>
-        <div id='new-restaurant-header'>Search Results</div>
-        <button
-          className='new-restaurant-button'
-          onClick={onReturnSearchBtnClick}>
-          Return to Search
-        </button>
-        {searchResultItems}
-        {/* Skipping next button functionality for now..
-        <button id='next-button'>Next</button> */}
-      </div>
+      <CollectionList
+        listName={'Search Results'}
+        searchResults={searchResults}
+      />
+      // <div id='new-restaurant-info'>
+      //   <div id='new-restaurant-header'>Search Results</div>
+      //   <button
+      //     className='new-restaurant-button'
+      //     onClick={onReturnSearchBtnClick}>
+      //     Return to Search
+      //   </button>
+      //   {searchResultItems}
+      //   {/* Skipping next button functionality for now..
+      //   <button id='next-button'>Next</button> */}
+      // </div>
     );
   } else if (restaurantInfo === null) {
     // SEARCH FOR A RESTAURANT
@@ -220,21 +224,23 @@ const NewRestaurant = (props) => {
       </div>
     );
   } else {
-    // VIEW RESTAURANT DETAILS
-    return (
-      <div id='new-restaurant-info'>
-        <div id='restaurant-name'>{restaurantInfo.name}</div>
-        <RestaurantInfo info={restaurantInfo} />
-        <div className='section-header'>
-          <span>Ratings</span>
-        </div>
-        <RatingsTable />
-        <div className='section-header'>
-          <span>Notes</span>
-        </div>
-        <RatingNotes buttonText='Finish' clickHandler={onFinishBtnClick} />
-      </div>
-    );
+    // // VIEW RESTAURANT DETAILS
+    // return (
+    //   <div id='new-restaurant-info'>
+    //     <div id="restaurant-name">{restaurantInfo.name}</div>
+    //     <RestaurantInfo info={restaurantInfo} />
+    //     <div className="section-header">
+    //       <span>Ratings</span>
+    //     </div>
+    //     <RatingsTable />
+    //     <div className="section-header">
+    //       <span>Notes</span>
+    //     </div>
+    //     <RatingNotes
+    //       buttonText='Finish'
+    //       clickHandler={onFinishBtnClick} />
+    //   </div>
+    // );
   }
 };
 
