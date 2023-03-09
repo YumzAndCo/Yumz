@@ -9,7 +9,6 @@ const ListItem = (props) => {
     return <DetailsModal show={modalStatus} close={() => setModalStatus(false)} />
   };
 
-  console.log('LIST ITEM PROPS', props)
 
   const onPreview = async (googlePlaceId) => {
     console.log(googlePlaceId);
@@ -39,7 +38,7 @@ const ListItem = (props) => {
       setModalStatus(true)
     } catch (error) {
       // This should be better error handling..
-      console.log('NewRestaurant onSearchResultClick error', error.message);
+      console.log('ListItem onSearchResultClick error', error.message);
     }
   };
 
