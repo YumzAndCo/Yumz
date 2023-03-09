@@ -11,7 +11,7 @@ const CollectionList = (props) => {
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
       preview: 'See details',
-      id: 1
+      googlePlaceId: 'ChIJ15FZYD_2rIkRfnqJkRlmNzI'
     },
     {
       name: 'Ramen place',
@@ -19,7 +19,7 @@ const CollectionList = (props) => {
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
       preview: 'See details',
-      id: 2
+      googlePlaceId: 'ChIJl3ZTXIr3rIkR5R45ePwPzL4'
     }];
   } else if (props.listName === 'Search Results') {
     restaurants = Object.values(props.searchResults);
@@ -32,7 +32,7 @@ const CollectionList = (props) => {
       cuisine: 'Japanese',
       hours: '11 am - 8 pm, 7 days/wk',
       preview: 'See details',
-      id: 1
+      googlePlaceId: 'ChIJl3ZTXIr3rIkR5R45ePwPzL4'
     }]
   }
 

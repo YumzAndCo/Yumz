@@ -20,6 +20,7 @@ module.exports = {
       },
     },
     compress: true,
+    historyApiFallback: true,
   },
   plugins: [
     new HTMLWebpackPlugin({

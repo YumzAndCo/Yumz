@@ -8,9 +8,9 @@ import RatingNotes from './RatingNotes.jsx';
 import helperFns from '../helperFns.js';
 import { useNavigate } from 'react-router-dom';
 import CollectionList from './CollectionList.jsx';
+import DetailsModal from './DetailsModal.jsx';
 
 const NewRestaurant = props => {
-
   const [restaurantInfo, setRestaurantInfo] = useState(null);
   const [searchResults, setSearchResults] = useState({});
 
@@ -79,6 +79,7 @@ const NewRestaurant = props => {
       const newSearchResults = {};
       for (const [googlePlaceId, googlePlaceInfo] of Object.entries(jsonSearchResults.results)) {
         newSearchResults[googlePlaceId] = {
+          'googlePlaceId': googlePlaceId,
           'name': googlePlaceInfo.name,
           'address': googlePlaceInfo.address
         };
@@ -198,23 +199,23 @@ const NewRestaurant = props => {
       </div>
     );
   } else {
-    // VIEW RESTAURANT DETAILS
-    return (
-      <div id='new-restaurant-info'>
-        <div id="restaurant-name">{restaurantInfo.name}</div>
-        <RestaurantInfo info={restaurantInfo} />
-        <div className="section-header">
-          <span>Ratings</span>
-        </div>
-        <RatingsTable />
-        <div className="section-header">
-          <span>Notes</span>
-        </div>
-        <RatingNotes
-          buttonText='Finish'
-          clickHandler={onFinishBtnClick} />
-      </div>
-    );
+    // // VIEW RESTAURANT DETAILS
+    // return (
+    //   <div id='new-restaurant-info'>
+    //     <div id="restaurant-name">{restaurantInfo.name}</div>
+    //     <RestaurantInfo info={restaurantInfo} />
+    //     <div className="section-header">
+    //       <span>Ratings</span>
+    //     </div>
+    //     <RatingsTable />
+    //     <div className="section-header">
+    //       <span>Notes</span>
+    //     </div>
+    //     <RatingNotes
+    //       buttonText='Finish'
+    //       clickHandler={onFinishBtnClick} />
+    //   </div>
+    // );
   }
 };
 
